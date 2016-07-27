@@ -1,0 +1,22 @@
+List networks:
+
+    nmcli device wifi list
+
+Connect to network:
+
+    sudo nmcli device wifi connect '(your wifi network name/SSID)' password '(your wifi password)' ifname wlan0
+
+Status:
+
+    nmcli device status
+    nmcli connection show --active
+
+Disconnect:
+
+    sudo nmcli dev disconnect wlan0
+
+Forget:
+
+    nmcli c
+    sudo nmcli connection delete id '(network id)'
+
