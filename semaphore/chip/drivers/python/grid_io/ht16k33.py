@@ -33,6 +33,16 @@ from .i2c import I2CDevice
 
 
 class HT16K33(I2CDevice):
+    """
+    I2C driver for the HT16K33 I2C LED controller.
+
+    This class implements the I2C device interface :class:`grid_io.I2CDevice`.
+
+    :var rows: Number of rows managed by the device.
+     Defaults to 8, but can be constrained by subclasses.
+    :var columns: Number of rows managed by the device.
+     Defaults to 16, but can be constrained by subclasses.
+    """
 
     BLINK_OFF = 0
     BLINK_2HZ = 1
@@ -75,6 +85,11 @@ class HT16K33(I2CDevice):
         self.set_brightness(15)
 
     def set_brightness(self, value):
+        """
+        Set the brightness of the LEDS driven by the driver.
+
+        :param uint value: Brightness level between o and 15.
+        """
         assert 0 <= value <= 15
 
         self._i2c_command(
@@ -82,6 +97,16 @@ class HT16K33(I2CDevice):
         )
 
     def set_blink_rate(self, value):
+        """
+        Set the blinking rate of the LEDS driven by the driver.
+
+        :var BLINK_OFF: Do not blink leds.
+        :var BLINK_2HZ: Blink twice a second.
+        :var BLINK_1HZ: Blink once a second.
+        :var BLINK_HALFHZ: Blink once each 2 seconds.
+
+        :param uint value: Blink rate mode. One of the above constant above.
+        """
         assert value in [
             HT16K33.BLINK_OFF,
             HT16K33.BLINK_2HZ,
@@ -94,6 +119,9 @@ class HT16K33(I2CDevice):
         )
 
     def flush(self):
+        """
+        Write Software buffer to the device.
+        """
         # Start at address 0x00
         self._i2c_command(0x00)
         for row in self._display_buffer:
@@ -101,10 +129,18 @@ class HT16K33(I2CDevice):
             self._i2c_command(row >> 8)
 
     def clear(self):
+        """
+        Clear Software buffer.
+        """
         self._display_buffer.fill(0)
 
     def write_bitmap(self, bitmap):
+        """
+        Write given bitmap to Software buffer.
 
+        :param bitmap: A bits matrix with the same rows and columns as the
+         device. Bits can be 0, 1, True or False.
+        """
         # Check bitmap consistency
         def is_bit(e):
             return e in [0, 1, False, True]
@@ -168,9 +204,12 @@ class HT16K33(I2CDevice):
         return '\n'.join(output)
 
 
-class LEDMatrix(HT16K33):
+class LEDMatrix8x8(HT16K33):
+    """
+    Specialized subclass for 8x8 LED matrix.
+    """
     def __init__(self, busid, address, dummy=False):
         super().__init__(busid, address, rows=8, columns=8, dummy=dummy)
 
 
-__all__ = ['LEDMatrix']
+__all__ = ['LEDMatrix8x8']

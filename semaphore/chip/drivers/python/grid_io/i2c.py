@@ -22,6 +22,9 @@ I2C base class for drivers.
 
 
 class DummySMBus(object):
+    """
+    Dummy wrapper for the SMBus object that log the I2C writes.
+    """
     def __init__(self, busid):
         self._busid = busid
 
@@ -32,6 +35,17 @@ class DummySMBus(object):
 
 
 class I2CDevice(object):
+    """
+    Base class for I2C devices.
+
+    :var uint address: Assigned I2C address.
+    :var uint8 busid: Assigned IC2 bus identifier.
+
+    :param uint address: I2C address.
+    :param uint8 busid: IC2 bus identifier.
+    :param bool dummy: Use a dummy I2C writer for debugging instead of real
+     I2C writes.
+    """
     def __init__(self, busid, address, dummy=False):
         self._busid = busid
         self._address = address
@@ -51,7 +65,12 @@ class I2CDevice(object):
         return self._busid
 
     def _i2c_command(self, cmd):
-        self._bus.write_byte(self._address, cmd)
+        """
+        Write given byte command to the device address.
+
+        :param uint8 cmd: Byte command to send to the device.
+        """
+        self._bus.write_byte(self._address, (cmd & 0xFF))
 
 
 __all__ = ['I2CDevice']
