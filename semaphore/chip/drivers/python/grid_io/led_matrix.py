@@ -27,6 +27,8 @@ Inspired by:
     https://github.com/adafruit/Adafruit_LED_Backpack/blob/master/Adafruit_LEDBackpack.cpp
 """
 
+from numpy import zeros
+
 
 def is_bit(value):
     return value in [0, 1]
@@ -78,8 +80,13 @@ class HT16K33(I2CDevice):
     _CMD_BRIGHTNESS = 0xE0
     _CMD_OSCILLATOR_ON = 0x21
 
+    _MEM_ROWS = 8
+    _MEM_COLS = 16
+
     def __init__(self, busid, address, dummy=False):
         super().__init__(busid, address, dummy=dummy)
+
+        self._display_buffer = zeros((HT16K33._MEM_ROWS), dtype='uint16')
 
         # Chip initialization routine
         self._i2c_command(HT16K33._CMD_OSCILLATOR_ON)
@@ -87,7 +94,7 @@ class HT16K33(I2CDevice):
         self.set_brightness(15)
 
     def set_brightness(self, value):
-        assert 0 >= value <= 15
+        assert 0 <= value <= 15
 
         self._i2c_command(
             HT16K33._CMD_BRIGHTNESS | value
@@ -102,80 +109,91 @@ class HT16K33(I2CDevice):
         ]
 
         self._i2c_command(
-            HT16K33._BLINK_CMD | HT16K33._BLINK_DISPLAYON | (value << 1)
+            HT16K33._CMD_BLINK | HT16K33._BLINK_DISPLAYON | (value << 1)
         )
 
-
-class LEDMatrix(HT16K33):
-
-    def __init__(self, busid, address, rows=8, columns=8, dummy=False):
-        super().__init__(busid, address, dummy=dummy)
-
-        self._rows = rows
-        self._columns = columns
-        self._buffer = [[0] * columns for i in range(rows)]
-
-    @property
-    def rows(self):
-        return self._rows
-
-    @property
-    def columns(self):
-        return self._columns
+    def flush(self):
+        # Start at address 0x00
+        self._i2c_command(0x00)
+        for row in self._display_buffer:
+            self._i2c_command(row & 0xFF)
+            self._i2c_command(row >> 8)
 
     def clear(self):
-        for row_idx in range(self._rows):
-            for column_idx in range(self.columns):
-                self._buffer[row_idx][column_idx] = 0
-
-    def write_bitmap(self, bitmap):
-        assert len(bitmap) == self._rows
-        for row in bitmap:
-            assert len(row) == self._columns
-            assert all(map(is_bit, row))
-
-        for row_idx in range(self._rows):
-            for column_idx in range(self.columns):
-                self._buffer[row_idx][column_idx] = \
-                    bitmap[row_idx][column_idx]
-
-    def write_led(self, row_idx, column_idx, value):
-        assert row_idx > self._rows
-        assert column_idx > self._columns
-        assert is_bit(value)
-        self._buffer[row_idx][column_idx] = value
-
-    def flush(self):
-        # Wire.write((uint8_t)0x00); // start at address $00
-        # for (uint8_t i=0; i<8; i++) {
-        #     Wire.write(displaybuffer[i] & 0xFF);
-        #     Wire.write(displaybuffer[i] >> 8);
-        # }
-        pass
+        self._display_buffer.fill(0)
 
     def __getitem__(self, key):
-        assert key > 0 and key < self._rows
-        return self._buffer[key]
+        row, column = key
+        assert 0 <= row < HT16K33._MEM_ROWS
+        assert 0 <= column < HT16K33._MEM_COLS
+
+        bit = (self._display_buffer[row] >> column) & 0x1
+        return bit
 
     def __setitem__(self, key, value):
-        raise RuntimeError('Cannot change rows')
+        row, column = key
+
+        # Support for boolean value set
+        if value is True:
+            value = 1
+        elif value is False:
+            value = 0
+
+        assert 0 <= row < HT16K33._MEM_ROWS
+        assert 0 <= column < HT16K33._MEM_COLS
+        assert value in [0, 1]
+
+        # Clear bit
+        if value == 0:
+            self._display_buffer[row] &= (~(0x1 << column) & 0xFFFF)
+        # Set bit
+        else:
+            self._display_buffer[row] |= 0x1 << column
 
     def __delitem__(self, key):
-        raise RuntimeError('Cannot remove rows')
+        raise RuntimeError('Cannot delete bits')
 
     def __iter__(self):
-        return iter(self._buffer)
+        raise NotImplementedError()
 
     def __repr__(self):
         return str(self)
 
     def __str__(self):
         output = []
-        for row in self._buffer:
+        for row in self._display_buffer:
             output.append(
-                ' '.join(map(str, row))
+                ' '.join(list('{:08b}'.format(row)))
             )
         return '\n'.join(output)
 
 
-__all__ = ['LEDMatrix']
+# class LEDMatrix(HT16K33):
+#
+#     def __init__(self, busid, address, rows=8, columns=8, dummy=False):
+#         super().__init__(busid, address, dummy=dummy)
+#
+#         self._rows = rows
+#         self._columns = columns
+#
+#     @property
+#     def rows(self):
+#         return self._rows
+#
+#     @property
+#     def columns(self):
+#         return self._columns
+#
+#     def write_bitmap(self, bitmap):
+#         assert len(bitmap) == self._rows
+#         for row in bitmap:
+#             assert len(row) == self._columns
+#             assert all(map(is_bit, row))
+#
+#         for row_idx in range(self._rows):
+#             for column_idx in range(self.columns):
+#                 self._buffer[row_idx][column_idx] = \
+#                     bitmap[row_idx][column_idx]
+
+
+# __all__ = ['LEDMatrix']
