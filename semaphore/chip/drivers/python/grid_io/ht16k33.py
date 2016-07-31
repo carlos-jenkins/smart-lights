@@ -125,8 +125,8 @@ class HT16K33(I2CDevice):
         # Start at address 0x00
         self._i2c_command(0x00)
         for row in self._display_buffer:
-            self._i2c_command(row & 0xFF)
-            self._i2c_command(row >> 8)
+            self._i2c_command(int(row) & 0xFF)
+            self._i2c_command(int(row) >> 8)
 
     def clear(self):
         """
@@ -150,8 +150,8 @@ class HT16K33(I2CDevice):
             assert all(map(is_bit, row))
 
         # Copy bitmap
-        for row in self._rows:
-            for column in self._columns:
+        for row in range(self._rows):
+            for column in range(self._columns):
                 self[row, column] = bitmap[row][column]
 
     def __getitem__(self, key):
@@ -186,8 +186,8 @@ class HT16K33(I2CDevice):
         raise RuntimeError('Cannot delete bits')
 
     def __iter__(self):
-        for row in self._rows:
-            for column in self._columns:
+        for row in range(self._rows):
+            for column in range(self._columns):
                 yield row, column, self[row][column]
 
     def __repr__(self):
