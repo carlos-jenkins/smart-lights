@@ -14,3 +14,5 @@ try running:
 
 If it still fails try stopping ModemManager service:
     sudo systemctl stop ModemManager.service
+
+And if that still doesn't work uninstall ModemManager :)
