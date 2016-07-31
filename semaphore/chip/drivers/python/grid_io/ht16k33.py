@@ -27,8 +27,6 @@ Inspired by:
     https://github.com/adafruit/Adafruit_LED_Backpack/blob/master/Adafruit_LEDBackpack.cpp
 """
 
-from numpy import zeros
-
 from .i2c import I2CDevice
 
 
@@ -50,13 +48,14 @@ class HT16K33(I2CDevice):
     BLINK_HALFHZ = 3
 
     _BLINK_DISPLAYON = 0x01
+    _SYSTEM_OSCILLATOR_ON = 0x01
 
     _CMD_BLINK = 0x80
     _CMD_BRIGHTNESS = 0xE0
-    _CMD_OSCILLATOR_ON = 0x21
+    _CMD_SYSTEM_SETUP = 0x20
 
-    _MEM_ROWS = 8
-    _MEM_COLS = 16
+    _MEM_ROWS = 16
+    _MEM_COLS = 8
 
     @property
     def rows(self):
@@ -66,10 +65,10 @@ class HT16K33(I2CDevice):
     def columns(self):
         return self._columns
 
-    def __init__(self, busid, address, rows=None, columns=None, dummy=False):
-        super().__init__(busid, address, dummy=dummy)
+    def __init__(self, busid, address, rows=None, columns=None):
+        super().__init__(busid, address)
 
-        self._display_buffer = zeros((HT16K33._MEM_ROWS), dtype='uint16')
+        self._display_buffer = bytearray([0] * 16)
 
         if rows is None:
             rows = HT16K33._MEM_ROWS
@@ -80,7 +79,9 @@ class HT16K33(I2CDevice):
         self._columns = columns
 
         # Chip initialization routine
-        self._i2c_command(HT16K33._CMD_OSCILLATOR_ON)
+        self.write(
+            HT16K33._CMD_SYSTEM_SETUP | HT16K33._SYSTEM_OSCILLATOR_ON
+        )
         self.set_blink_rate(HT16K33.BLINK_OFF)
         self.set_brightness(15)
 
@@ -122,17 +123,15 @@ class HT16K33(I2CDevice):
         """
         Write Software buffer to the device.
         """
-        # Start at address 0x00
-        self._i2c_command(0x00)
-        for row in self._display_buffer:
-            self._i2c_command(int(row) & 0xFF)
-            self._i2c_command(int(row) >> 8)
+        for register, value in enumerate(self.buffer):
+            self.register_write_u8(register, value)
 
     def clear(self):
         """
         Clear Software buffer.
         """
-        self._display_buffer.fill(0)
+        for row in range(HT16K33._MEM_ROWS):
+            self._display_buffer[row] = 0
 
     def write_bitmap(self, bitmap):
         """
@@ -208,8 +207,8 @@ class LEDMatrix8x8(HT16K33):
     """
     Specialized subclass for 8x8 LED matrix.
     """
-    def __init__(self, busid, address, dummy=False):
-        super().__init__(busid, address, rows=8, columns=8, dummy=dummy)
+    def __init__(self, busid, address):
+        super().__init__(busid, address, rows=8, columns=8)
 
 
 __all__ = ['LEDMatrix8x8']
