@@ -137,7 +137,7 @@ class HT16K33(I2CDevice):
         assert value in [0, 1]
 
         for row in range(HT16K33._MEM_ROWS):
-            self._display_buffer[row] = value
+            self._display_buffer[row] = value * 255
 
     def clear(self):
         """
