@@ -1,0 +1,30 @@
+const int sampleWindow = 50; // Sample window width in mS (50 mS = 20Hz)
+unsigned int sample;
+ 
+void setup() {
+   Serial.begin(9600);
+}
+ 
+void loop() {
+   unsigned long startMillis= millis();
+   unsigned int amplitude = 0;
+ 
+   unsigned int signalMax = 0;
+   unsigned int signalMin = 1024;
+ 
+   // collect data for 50 mS
+   while (millis() - startMillis < sampleWindow)
+   {
+      sample = analogRead(0);
+      if (sample < 1024) {
+         if (sample > signalMax) {
+            signalMax = sample;  // save just the max levels
+         } else if (sample < signalMin) {
+            signalMin = sample;  // save just the min levels
+         }
+      }
+   }
+   amplitude = signalMax - signalMin;
+ 
+   Serial.println(amplitude);
+}
