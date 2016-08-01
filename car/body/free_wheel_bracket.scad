@@ -34,7 +34,7 @@ module free_wheel_bracket(
 
 servo_height = 20;
 battery_height = 9.5;
-tickness = 4;
+tickness = 3;
 bracket_width = 20;
 screw_size = 4.85;
 

@@ -16,7 +16,7 @@ module universal_bracket(
 
 servo_height = 20;
 battery_height = 9.5;
-tickness = 4;
+tickness = 3;
 bracket_width = 15;
 
 universal_bracket(
