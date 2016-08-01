@@ -29,7 +29,7 @@ def test_ladder():
     m = HT16K33(2, 0x74)
 
     for r in range(m.rows):
-        for c in range(m.colums):
+        for c in range(m.columns):
             m[r, c] = 1
             m.flush()
             sleep(1)
