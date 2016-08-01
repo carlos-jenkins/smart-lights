@@ -60,7 +60,8 @@ def find_requirements(filename):
 setup(
     name='grid_io',
     version=find_version('grid_io/__init__.py'),
-    packages=find_packages('grid_io'),
+    packages=find_packages('.'),
+    zip_safe=False,
 
     # Dependencies
     install_requires=find_requirements('requirements.txt'),
