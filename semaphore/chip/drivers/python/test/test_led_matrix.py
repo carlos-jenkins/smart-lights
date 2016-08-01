@@ -1,5 +1,5 @@
 from time import sleep
-from grid_io.ht16k33 import LEDMatrix8x8
+from grid_io.ht16k33 import LEDMatrix8x8, HT16K33
 
 
 def test_matrix():
@@ -22,3 +22,15 @@ def test_matrix():
     ]
     m.write_bitmap(bitmap)
     m.flush()
+
+
+def test_ladder():
+
+    m = HT16K33(2, 0x74)
+
+    for r in range(m.rows):
+        for c in range(m.colums):
+            m[r, c] = 1
+            m.flush()
+            sleep(1)
+            m.clear()
