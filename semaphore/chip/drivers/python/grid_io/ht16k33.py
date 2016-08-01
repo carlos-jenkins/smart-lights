@@ -93,7 +93,7 @@ class HT16K33(I2CDevice):
         """
         assert 0 <= value <= 15
 
-        self._i2c_command(
+        self.write(
             HT16K33._CMD_BRIGHTNESS | value
         )
 
@@ -115,7 +115,7 @@ class HT16K33(I2CDevice):
             HT16K33.BLINK_HALFHZ,
         ]
 
-        self._i2c_command(
+        self.write(
             HT16K33._CMD_BLINK | HT16K33._BLINK_DISPLAYON | (value << 1)
         )
 
