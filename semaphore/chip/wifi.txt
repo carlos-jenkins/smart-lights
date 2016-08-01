@@ -20,3 +20,7 @@ Forget:
     nmcli c
     sudo nmcli connection delete id '(network id)'
 
+Connect:
+    ip addr show wlan0
+    ssh chip@<ip>
+
