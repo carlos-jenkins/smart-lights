@@ -1,0 +1,3 @@
+Height: 9.50mm
+Width: 72.00mm
+Length: 130.00mm
