@@ -123,7 +123,7 @@ class HT16K33(I2CDevice):
         """
         Write Software buffer to the device.
         """
-        for register, value in enumerate(self.buffer):
+        for register, value in enumerate(self._display_buffer):
             self.register_write_u8(register, value)
 
     def clear(self):
