@@ -126,12 +126,24 @@ class HT16K33(I2CDevice):
         for register, value in enumerate(self._display_buffer):
             self.register_write_u8(register, value)
 
+    def fill(self, value):
+        """
+        Fill Software buffer.
+        """
+        if value is True:
+            value = 1
+        elif value is False:
+            value = 0
+        assert value in [0, 1]
+
+        for row in range(HT16K33._MEM_ROWS):
+            self._display_buffer[row] = value
+
     def clear(self):
         """
         Clear Software buffer.
         """
-        for row in range(HT16K33._MEM_ROWS):
-            self._display_buffer[row] = 0
+        self.fill(0)
 
     def write_bitmap(self, bitmap):
         """
