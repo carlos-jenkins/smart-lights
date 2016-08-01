@@ -1,0 +1,3 @@
+Led matrix: 31.90mm x 31.90mm
+Board size: 32.00mm x 40.80mm
+
