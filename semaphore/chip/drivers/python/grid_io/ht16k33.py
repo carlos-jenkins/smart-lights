@@ -74,6 +74,7 @@ class HT16K33(I2CDevice):
         self.write(
             HT16K33._CMD_SYSTEM_SETUP | HT16K33._SYSTEM_OSCILLATOR_ON
         )
+        self.flush()
         self.set_blink_rate(HT16K33.BLINK_OFF)
         self.set_brightness(15)
 

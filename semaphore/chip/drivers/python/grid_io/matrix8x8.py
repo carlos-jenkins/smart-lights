@@ -53,9 +53,7 @@ class Matrix8x8(HT16K33):
         led = ((row + 7) % 8) + column * 16
         mrow = led // 8
         mcolumn = led % 8
-        print(
-            'Led: {}, Row: {}, Col: {}'.format(led, mrow, mcolumn)
-        )
+
         return (mrow, mcolumn)
 
     def write_bitmap(self, bitmap):
