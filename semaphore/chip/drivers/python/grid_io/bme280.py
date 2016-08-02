@@ -78,8 +78,7 @@ BME280_REGISTER_HUMIDITY_DATA = 0xFD
 
 class BME280(I2CDevice):
     def __init__(
-            self, busnum,
-            address=BME280_I2CADDR,
+            self, busnum, address,
             mode=BME280_OSAMPLE_1,
             **kwargs):
 
