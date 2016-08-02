@@ -230,7 +230,7 @@ class BME280(I2CDevice):
 
     def read_humidity(self):
         """
-        Gets the compensated humidity in percent (0-100).
+        Gets the compensated humidity in percent (0.0-100.0).
         """
         adc = self._read_raw_humidity()
         h = self.t_fine - 76800.0
@@ -247,10 +247,9 @@ class BME280(I2CDevice):
         )
         h = h * (1.0 - self.dig_h1 * h / 524288.0)
 
-        if h > 100:
-            h = 100
-        elif h < 0:
-            h = 0
+        # Set boundary
+        h = min(h, 100.0)
+        h = max(h, 0.0)
 
         return h
 
