@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { GoogleMapLoader, GoogleMap, InfoWindow, Marker } from 'react-google-maps';
-import { triggerEvent } from 'react-google-maps/lib/utils';
+import { GoogleMapLoader, GoogleMap, Marker } from 'react-google-maps';
+import { triggerEvent } from "react-google-maps/lib/utils";
 
 import api from './helpers/grid_api';
 import './App.css';
@@ -14,7 +14,8 @@ class App extends Component {
               lat: 10.0416216,
               lng: -84.1810092,
             },
-            markers: []
+            markers: [],
+            containerMapClass: 'col s12 map-container'
           }
     }
 
@@ -26,38 +27,63 @@ class App extends Component {
     }
 
     render() {
-        console.log(this.state)
         return (
             <div className="container">
                 <h1>Open Semaphore</h1>
-                <GoogleMapLoader
-                    containerElement={ <div className="row map-container"/> }
-                    googleMapElement={
-                        <GoogleMap
-                            ref='map'
-                            center={this.state.center}
-                            defaultZoom={8}
-                            defaultOptions={{
-                                styles: require('./styledMap.json')
-                            }}>
-                            {this.state.markers.map((marker, index) => {
-                                const ref = `marker_${index}`;
-                                var latitude = marker.latitude;
-                                var longitude = marker.longitude;
+                <div className="row row-wrapper">
+                    <GoogleMapLoader
+                        containerElement={ <div className={this.state.containerMapClass}/> }
+                        googleMapElement={
+                            <GoogleMap
+                                ref='_map'
+                                center={this.state.center}
+                                defaultZoom={8}
+                                defaultOptions={{
+                                    styles: require('./styledMap.json')
+                                }}
+                                onClick={() => { this._onMapClick() }}>
+                                {this.state.markers.map((marker, index) => {
+                                    const ref = `marker_${index}`;
+                                    var latitude = marker.latitude;
+                                    var longitude = marker.longitude;
 
-                                return (
-                                    <Marker
-                                        key={index}
-                                        ref={ref}
-                                        position={
-                                            new google.maps.LatLng(latitude, longitude)
-                                        }/>
-                                );
-                            })}
-                        </GoogleMap>
+                                    return (
+                                        <Marker
+                                            key={index}
+                                            ref={ref}
+                                            position={
+                                                new google.maps.LatLng(latitude, longitude)
+                                            }
+                                            onClick={() => { this._onMarkerClick(marker) }}/>
+                                    );
+                                })}
+                            </GoogleMap>
                     }/>
+                    <div className="col s5">
+                        {this.state.selectedMarker && <div>
+                            <h3>{this.state.selectedMarker.name}</h3>
+                            <a className="btn"> Show Dashboard </a>
+                        </div>}
+                    </div>
+                </div>
             </div>
         );
+    }
+
+    _onMarkerClick(marker) {
+        this.setState({
+            selectedMarker: marker,
+            containerMapClass: 'col s7 map-container'
+        })
+        triggerEvent(this._map, 'resize');
+    }
+
+    _onMapClick() {
+        this.setState({
+            selectedMarker: null,
+            containerMapClass: 'col s12 map-container'
+        })
+        triggerEvent(this._map, 'resize');
     }
 }
 
