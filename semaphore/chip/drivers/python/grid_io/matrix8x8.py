@@ -70,10 +70,10 @@ class Matrix8x8(HT16K33):
                 self[row, column] = bitmap[row][column]
 
     def __getitem__(self, key):
-        return super()[self._visual_to_memory(*key)]
+        return super().__getitem__(self._visual_to_memory(*key))
 
     def __setitem__(self, key, value):
-        super()[self._visual_to_memory(*key)] = value
+        super().__setitem__(self._visual_to_memory(*key), value)
 
     def __iter__(self):
         for row in range(self.rows):
