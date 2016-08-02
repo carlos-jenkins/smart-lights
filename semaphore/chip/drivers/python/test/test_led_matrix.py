@@ -52,3 +52,18 @@ def test_ladder():
             m.flush()
             sleep(1)
             m.clear()
+
+    m.flush()
+
+
+def test_flash():
+
+    m = Matrix8x8(2, 0x74)
+
+    m.fill(1)
+    m.flush()
+    m.set_blink_rate(m.BLINK_2HZ)
+    m.set_brightness(1)
+    sleep(5)
+    m.set_blink_rate(m.BLINK_1HZ)
+    m.set_brightness(15)
