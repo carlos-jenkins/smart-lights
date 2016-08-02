@@ -21,7 +21,7 @@ from grid_io.bme280 import BME280
 
 def test_atmospheric_sensor():
 
-    sensor = BME280(2, address=0x77, mode=BME280.ULTRALOWPOWER)
+    sensor = BME280(2, address=0x77, mode=BME280.modes.ULTRALOWPOWER)
 
     degrees = sensor.read_temperature()
     hectopascals = sensor.read_pressure() / 100
