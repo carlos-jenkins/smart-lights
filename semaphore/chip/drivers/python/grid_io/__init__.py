@@ -19,3 +19,5 @@
 """
 The Grid Team Drivers
 """
+
+__version__ = '0.1.0'
