@@ -17,17 +17,17 @@
 # under the License.
 
 """
-I2C driver for the Adafruit LED Matrix with backpack
+I2C driver for HT16K33 RAM Mapping 16*8 LED Controller Driver with keyscan by
+Holtek.
 
-    https://www.adafruit.com/products/1614
-
-Inspired by:
-
-    https://github.com/adafruit/Adafruit_LED_Backpack/blob/master/Adafruit_LEDBackpack.h
-    https://github.com/adafruit/Adafruit_LED_Backpack/blob/master/Adafruit_LEDBackpack.cpp
+    https://cdn-shop.adafruit.com/datasheets/ht16K33v110.pdf
 """
 
 from .i2c import I2CDevice
+
+
+def is_bit(e):
+    return e in [0, 1, False, True]
 
 
 class HT16K33(I2CDevice):
@@ -59,24 +59,16 @@ class HT16K33(I2CDevice):
 
     @property
     def rows(self):
-        return self._rows
+        return HT16K33._MEM_ROWS
 
     @property
     def columns(self):
-        return self._columns
+        return HT16K33._MEM_COLS
 
-    def __init__(self, busid, address, rows=None, columns=None):
-        super().__init__(busid, address)
+    def __init__(self, busnum, address):
+        super().__init__(busnum, address)
 
-        self._display_buffer = bytearray([0] * 16)
-
-        if rows is None:
-            rows = HT16K33._MEM_ROWS
-        if columns is None:
-            columns = HT16K33._MEM_COLS
-
-        self._rows = rows
-        self._columns = columns
+        self._display_buffer = bytearray([0] * HT16K33._MEM_ROWS)
 
         # Chip initialization routine
         self.write(
@@ -153,22 +145,20 @@ class HT16K33(I2CDevice):
          device. Bits can be 0, 1, True or False.
         """
         # Check bitmap consistency
-        def is_bit(e):
-            return e in [0, 1, False, True]
-        assert len(bitmap) == self._rows
+        assert len(bitmap) == HT16K33._MEM_ROWS
         for row in bitmap:
-            assert len(row) == self._columns
+            assert len(row) == HT16K33._MEM_COLS
             assert all(map(is_bit, row))
 
         # Copy bitmap
-        for row in range(self._rows):
-            for column in range(self._columns):
+        for row in range(HT16K33._MEM_ROWS):
+            for column in range(HT16K33._MEM_COLS):
                 self[row, column] = bitmap[row][column]
 
     def __getitem__(self, key):
         row, column = key
-        assert 0 <= row < self._rows
-        assert 0 <= column < self._columns
+        assert 0 <= row < HT16K33._MEM_ROWS
+        assert 0 <= column < HT16K33._MEM_COLS
 
         bit = (self._display_buffer[row] >> column) & 0x1
         return bit
@@ -182,8 +172,8 @@ class HT16K33(I2CDevice):
         elif value is False:
             value = 0
 
-        assert 0 <= row < self._rows
-        assert 0 <= column < self._columns
+        assert 0 <= row < HT16K33._MEM_ROWS
+        assert 0 <= column < HT16K33._MEM_COLS
         assert value in [0, 1]
 
         # Clear bit
@@ -197,9 +187,9 @@ class HT16K33(I2CDevice):
         raise RuntimeError('Cannot delete bits')
 
     def __iter__(self):
-        for row in range(self._rows):
-            for column in range(self._columns):
-                yield row, column, self[row][column]
+        for row in range(HT16K33._MEM_ROWS):
+            for column in range(HT16K33._MEM_COLS):
+                yield row, column
 
     def __repr__(self):
         return str(self)
@@ -209,18 +199,10 @@ class HT16K33(I2CDevice):
         for row in self._display_buffer:
             output.append(
                 ' '.join(reversed(list(
-                    '{{:0{}b}}'.format(self._columns).format(row)
+                    '{{:0{}b}}'.format(HT16K33._MEM_COLS).format(row)
                 )))
             )
         return '\n'.join(output)
 
 
-class LEDMatrix8x8(HT16K33):
-    """
-    Specialized subclass for 8x8 LED matrix.
-    """
-    def __init__(self, busid, address):
-        super().__init__(busid, address, rows=8, columns=8)
-
-
-__all__ = ['LEDMatrix8x8']
+__all__ = ['HT16K33']
