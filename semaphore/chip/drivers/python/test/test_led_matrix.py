@@ -67,3 +67,7 @@ def test_flash():
     sleep(5)
     m.set_blink_rate(m.BLINK_1HZ)
     m.set_brightness(15)
+    sleep(5)
+    m.set_blink_rate(m.BLINK_OFF)
+    m.clear()
+    m.flush()
