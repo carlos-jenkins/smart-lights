@@ -1,8 +1,9 @@
 {
-  "name": "open semaphore api",
+  "name": "open_semaphore_api",
   "version": "0.0.1",
   "devDependencies": {},
   "dependencies": {
+    "cors": "^2.7.1",
     "express": "^4.14.0"
   }
 }
