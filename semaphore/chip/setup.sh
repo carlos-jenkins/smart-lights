@@ -9,7 +9,7 @@ sudo locale-gen en_US.UTF-8
 sudo update-locale LANG=en_US.UTF-8
 
 # Basic tools
-sudo apt-get install -y ca-certificates tree git
+sudo apt-get install -y ca-certificates tree git bash-completion
 
 # Python environment
 sudo apt-get install -y python3
