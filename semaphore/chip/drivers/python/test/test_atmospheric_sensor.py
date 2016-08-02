@@ -16,12 +16,12 @@
 # specific language governing permissions and limitations
 # under the License.
 
-from grid_io.bme280 import BME280, BME280_OSAMPLE_8
+from grid_io.bme280 import BME280
 
 
 def test_atmospheric_sensor():
 
-    sensor = BME280(2, 0x77, mode=BME280_OSAMPLE_8)
+    sensor = BME280(2, address=0x77, mode=BME280.ULTRALOWPOWER)
 
     degrees = sensor.read_temperature()
     hectopascals = sensor.read_pressure() / 100
