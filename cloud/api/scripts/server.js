@@ -1,22 +1,17 @@
 var express = require('express');
 var cors = require('cors')
+var db = require('./database');
 
 var app = express();
 app.use(cors());
 
+db.init();
+
 app.get('/grid', function(req, res) {
-    res.json([
-      {
-          latitude: 9.9454167,
-          longitude: -84.1491331,
-          name: 'Multiplaza del Este'
-      },
-      {
-          latitude: 9.9412773,
-          longitude: -84.082515,
-          name: 'Museo de los Niños'
-      }
-    ])
+    db.selectAll('semaphore', function(data) {
+        res.json(data)
+    });
+
 });
 
 app.get('/', function (req, res) {
