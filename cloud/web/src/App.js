@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { GoogleMapLoader, GoogleMap, Marker } from 'react-google-maps';
 import { triggerEvent } from "react-google-maps/lib/utils";
+import { Link } from 'react-router'
 
 import api from './helpers/grid_api';
 import './App.css';
@@ -62,7 +63,10 @@ class App extends Component {
                     <div className="col s5">
                         {this.state.selectedMarker && <div>
                             <h3>{this.state.selectedMarker.name}</h3>
-                            <a className="btn"> Show Dashboard </a>
+                            <Link className='btn'
+                                to={`/dashboard/${this.state.selectedMarker.id}`}>
+                                Show Dashboard
+                            </Link>
                         </div>}
                     </div>
                 </div>
@@ -75,7 +79,7 @@ class App extends Component {
             selectedMarker: marker,
             containerMapClass: 'col s7 map-container'
         })
-        triggerEvent(this._map, 'resize');
+        // triggerEvent(this._map, 'resize');
     }
 
     _onMapClick() {
@@ -83,7 +87,7 @@ class App extends Component {
             selectedMarker: null,
             containerMapClass: 'col s12 map-container'
         })
-        triggerEvent(this._map, 'resize');
+        // triggerEvent(this._map, 'resize');
     }
 }
 

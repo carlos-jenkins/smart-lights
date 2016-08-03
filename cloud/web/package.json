@@ -9,6 +9,7 @@
     "react": "^15.2.1",
     "react-dom": "^15.2.1",
     "react-google-maps": "^4.11.0",
+    "react-router": "^2.6.1",
     "superagent": "^2.1.0"
   },
   "scripts": {
