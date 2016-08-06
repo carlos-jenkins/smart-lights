@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-sudo nmcli device wifi connect 'Stingray' password '10$Ch4nch0$C0m3n4rr0z' ifname wlan0
+sudo nmcli device wifi connect 'TheGrid' password '2E7FFA33' ifname wlan0
