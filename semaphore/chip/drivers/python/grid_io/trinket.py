@@ -1,5 +1,5 @@
 from .i2c import I2CDevice
-
+from argparse import Namespace
 
 class Trinket(I2CDevice):
 
