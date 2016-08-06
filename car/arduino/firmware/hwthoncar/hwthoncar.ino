@@ -1,4 +1,4 @@
-#include <Servo.h>
+#include <ServoTimer2.h>
 #include <RH_ASK.h>
 #include <SPI.h> // Not actually used but needed to compile RadioHead
 
@@ -9,8 +9,8 @@ const int pin_led = 4;
 const int pin_switch = 5;
 
 
-Servo left_servo;
-Servo right_servo;
+ServoTimer2 left_servo;
+ServoTimer2 right_servo;
 const int STOP = 90;
 const int FULL_SPEED = 180;
 
