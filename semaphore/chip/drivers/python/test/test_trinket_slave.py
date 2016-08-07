@@ -28,3 +28,10 @@ def test_trinket_read_sensor():
 
     print('Noise = {0}:{0:016b} dB'.format(noise))
     print('Gas  = {0}:{0:016b} '.format(gas))
+
+def test_trinket_transmitter():
+
+    sensor = Trinket(2, 18)
+
+    write_semaphore_state(True)
+    write_semaphore_state(False)
