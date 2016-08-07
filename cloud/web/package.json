@@ -10,7 +10,8 @@
     "react": "^15.3.0",
     "react-google-maps": "^4.11.0",
     "react-router": "^2.6.1",
-    "superagent": "^2.1.0"
+    "superagent": "^2.1.0",
+    "underscore": "^1.8.3"
   },
   "scripts": {
     "start": "react-scripts start",

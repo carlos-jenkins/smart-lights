@@ -1,8 +1,8 @@
 import request from 'superagent';
 
-var baseUrl = 'http://localhost:3001';
+var baseUrl = 'http://hwthoncr16.herokuapp.com/thegrid';
 
-var apiService = {
+var api = {
     get: function(url, callback) {
         request
            .get(baseUrl + url)
@@ -20,4 +20,17 @@ var apiService = {
     }
 };
 
-module.exports = apiService;
+
+
+module.exports = {
+    getLast: function(callback) {
+        api.get('/last', function(err, result) {
+            if (err) {
+                console.log(err);
+                return;
+            }
+
+            callback(result);
+        })
+    }
+};

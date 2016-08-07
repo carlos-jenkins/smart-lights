@@ -1,34 +1,26 @@
 import React, { Component } from 'react';
 import moment from 'moment';
+import _ from 'underscore';
 
-import api from './helpers/grid_api';
+import api from './helpers/api';
 import './Dashboard.css';
-
-var semaphore_data = {
-    id: 'something-something',
-    id_semaphore: 'd17f670c-1cf5-41ff-a2aa-408868910d1c',
-    timestamp: Date.now(),
-    state: 'red',
-    data: {
-        noise: 10,
-        gas: 40,
-        temperature: 26.26,
-        pressure: 880.08,
-        humidity: 63.16
-    }
-}
 
 var self;
 
 class Dashboard extends Component {
     constructor(props, context) {
         super(props, context);
-        this.state = {
-            semaphore: semaphore_data,
-            active: semaphore_data.state
-        }
-
         self = this;
+        this.state = {
+            audio: '',
+            humidity: '',
+            timestamp: '',
+            pressure: '',
+            state: '',
+            gas: '',
+            id_semaphore: '',
+            temperature: '',
+        }
     }
 
     componentDidMount() {
@@ -40,10 +32,7 @@ class Dashboard extends Component {
     }
 
     render() {
-        var semaphore = this.state.semaphore;
-        var data = semaphore.data;
-
-        console.log(this.state.active);
+        var semaphore = this.state;
 
         return (
             <div className="container">
@@ -52,7 +41,7 @@ class Dashboard extends Component {
                         <h1>Dashboard</h1>
                     </div>
                     <div className="col s6">
-                        <h5>{this.state.date}</h5>
+                        <h5>{moment().format('MMMM Do YYYY, h:mm:ss a')}</h5>
                     </div>
                 </div>
 
@@ -81,7 +70,7 @@ class Dashboard extends Component {
                         graphic here
                     </div>
                     <div className="col s6">
-                        {data.noise}
+                        {semaphore.audio}
                     </div>
                 </div>
                 {/* Temperature */ }
@@ -95,7 +84,7 @@ class Dashboard extends Component {
                         graphic here
                     </div>
                     <div className="col s6">
-                        {data.temperature}
+                        {semaphore.temperature}
                     </div>
                 </div>
                 {/* Humidity */ }
@@ -109,7 +98,7 @@ class Dashboard extends Component {
                         graphic here
                     </div>
                     <div className="col s6">
-                        {data.humidity}
+                        {semaphore.humidity}
                     </div>
                 </div>
                 {/* Pressure */ }
@@ -123,7 +112,7 @@ class Dashboard extends Component {
                         graphic here
                     </div>
                     <div className="col s6">
-                        {data.pressure}
+                        {semaphore.pressure}
                     </div>
                 </div>
             </div>
@@ -131,7 +120,9 @@ class Dashboard extends Component {
     }
 
     _tick() {
-        self.setState({date: moment().format('MMMM Do YYYY, h:mm:ss a')});
+        api.getLast(function(last) {
+            self.setState(_.extend(self.state, last))
+        })
     }
 
     _toggleGreen() {

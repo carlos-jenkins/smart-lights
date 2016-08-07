@@ -3,7 +3,6 @@ import { GoogleMapLoader, GoogleMap, Marker } from 'react-google-maps';
 import { triggerEvent } from "react-google-maps/lib/utils";
 import { Link } from 'react-router'
 
-import api from './helpers/grid_api';
 import './App.css';
 
 class App extends Component {
@@ -15,16 +14,20 @@ class App extends Component {
               lat: 10.0416216,
               lng: -84.1810092,
             },
-            markers: [],
+            markers: [{
+                id: 2,
+                latitude: 9.9454167,
+                longitude: -84.1491331,
+                name: 'Multiplaza del Este'
+            },
+            {
+                id: 1,
+                latitude: 9.9412773,
+                longitude: -84.082515,
+                name: 'Museo de los Niños'
+            }],
             containerMapClass: 'col s12 map-container'
           }
-    }
-
-    componentDidMount() {
-        var self = this;
-        api.getGrid(function(err, data) {
-            self.setState({ markers: data});
-        });
     }
 
     render() {
