@@ -22,7 +22,7 @@ class Dashboard extends Component {
                 state: '',
                 gas: '',
                 id_semaphore: '',
-                temperature: ''
+                temperature: '0.0'
             }]
         }
     }
@@ -37,6 +37,8 @@ class Dashboard extends Component {
 
     render() {
         var semaphore = _.last(this.state.data);
+        var temperature = parseFloat(semaphore.temperature);
+
         return (
             <div className="container">
                 <div className="row">
@@ -104,7 +106,11 @@ class Dashboard extends Component {
                         <h2>Temperature</h2>
                     </div>
                     <div className="col s6">
-                        {semaphore.temperature}
+                        <div className="thermometer-outer">
+                            <div className="thermometer-inner">
+                                {Math.floor(temperature)}<span>{`.${Math.round((temperature.toFixed(1) % 1) * 10)}`}</span><strong>&deg;</strong>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div className="row">
