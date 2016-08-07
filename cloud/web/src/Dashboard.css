@@ -1,3 +1,11 @@
+.rd3-linechart-circle {
+    fill: #64DD17 !important;
+}
+
+.rd3-linechart-path {
+    stroke: #AEEA00 !important;
+}
+
 .circle {
    border-radius: 50%;
    height: 50px;
