@@ -44,7 +44,7 @@ class Dashboard extends Component {
         var audio = parseInt(semaphore.audio);
         var temperature = parseFloat(semaphore.temperature);
         var humidity = parseFloat(semaphore.humidity);
-        var pressure = parseFloat(semaphore.pressure);
+        var pressure = parseFloat(semaphore.pressure) / 100;
 
         return (
             <div className="container">
