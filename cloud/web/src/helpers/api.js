@@ -31,6 +31,28 @@ module.exports = {
             }
 
             callback(result);
-        })
+        });
+    },
+
+    getAll: function(callback) {
+        api.get('/all', function(err, result) {
+            if (err) {
+                console.log(err);
+                return;
+            }
+
+            callback(result);
+        });
+    },
+
+    getLastQty: function(params, callback) {
+        api.get('/all', function(err, result) {
+            if (err) {
+                console.log(err);
+                return;
+            }
+            var length = result.length;
+            callback(result.slice(length - params.qty, length));
+        });
     }
 };

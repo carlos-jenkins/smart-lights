@@ -12,19 +12,21 @@ class Dashboard extends Component {
         super(props, context);
         self = this;
         this.state = {
-            audio: '',
-            humidity: '',
-            timestamp: '',
-            pressure: '',
-            state: '',
-            gas: '',
-            id_semaphore: '',
-            temperature: '',
+            data: [{
+                audio: '',
+                humidity: '',
+                timestamp: '',
+                pressure: '',
+                state: '',
+                gas: '',
+                id_semaphore: '',
+                temperature: '',
+            }]
         }
     }
 
     componentDidMount() {
-        this._timer = setInterval(this._tick, 1000);
+        this._timer = setInterval(this._tick, 5000);
     }
 
     componentWillUnmount() {
@@ -32,7 +34,7 @@ class Dashboard extends Component {
     }
 
     render() {
-        var semaphore = this.state;
+        var semaphore = _.last(this.state.data);
 
         return (
             <div className="container">
@@ -120,8 +122,8 @@ class Dashboard extends Component {
     }
 
     _tick() {
-        api.getLast(function(last) {
-            self.setState(_.extend(self.state, last))
+        api.getLastQty({ qty: 10 }, function(tail) {
+            self.setState({ data: tail });
         })
     }
 
