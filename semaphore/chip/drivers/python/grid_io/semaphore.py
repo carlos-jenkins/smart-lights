@@ -28,6 +28,9 @@ from .trinket import Trinket
 from .matrix8x8 import Matrix8x8
 
 
+external_state = False
+
+
 class Semaphore(object):
 
     def __init__(self, uri, semaphore_id=1):
@@ -45,7 +48,7 @@ class Semaphore(object):
         )
 
         self._state = None
-        self.set_semaphore(False)
+        self.set_semaphore(external_state)
 
         self.uri = uri
 
@@ -101,18 +104,19 @@ class Semaphore(object):
         semaphore_data.update(self.gather_data())
         post(self.uri, data=semaphore_data)
 
-    def start(self):
+    def start(self, host='0.0.0.0', port=8080):
 
-        external_state = self._state
+        global external_state
         server = Flask('SmartLight {}'.format(self._semaphore_id))
 
         @server.route('/state/<int:state>')
         def external_state_set(state):
-            external_state = state == 0  # noqa
+            global external_state
+            external_state = state == 0
             return ''
 
         def server_start():
-            server.run(debug=True, host='0.0.0.0')
+            server.run(host=host, port=port, debug=False)
 
         server_thread = Thread(target=server_start)
         server_thread.start()
