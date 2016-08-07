@@ -17,7 +17,10 @@
 # under the License.
 
 from time import sleep
+from threading import Thread
 from datetime import datetime
+
+from flask import Flask
 from requests import post
 
 from .bme280 import BME280
@@ -27,8 +30,9 @@ from .matrix8x8 import Matrix8x8
 
 class Semaphore(object):
 
-    def __init__(self, uri):
+    def __init__(self, uri, semaphore_id=1):
         self._busnum = 2
+        self._semaphore_id = semaphore_id
 
         self._green = Matrix8x8(self._busnum, 0x70)
         self._yellow = Matrix8x8(self._busnum, 0x71)
@@ -91,14 +95,31 @@ class Semaphore(object):
 
     def send_data(self):
         semaphore_data = {}
-        semaphore_data['id_semaphore'] = "1"
+        semaphore_data['id_semaphore'] = self._semaphore_id
         semaphore_data['timestamp'] = datetime.now().isoformat()
         semaphore_data['state'] = self._state
         semaphore_data.update(self.gather_data())
-        print(semaphore_data)
-
         post(self.uri, data=semaphore_data)
 
+    def start(self):
+
+        external_state = self._state
+        server = Flask('SmartLight {}'.format(self._semaphore_id))
+
+        @server.route('/state/<int:state>')
+        def external_state_set(state):
+            external_state = state == 0  # noqa
+            return ''
+
+        def server_start():
+            server.run(debug=True, host='0.0.0.0')
+
+        server_thread = Thread(target=server_start)
+        server_thread.start()
+
+        while True:
+            self.set_semaphore(external_state)
+            self.send_data()
 
 
 __all__ = ['Semaphore']

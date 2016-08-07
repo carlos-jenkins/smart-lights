@@ -1,2 +1,3 @@
 # smbus-cffi
 requests
+flask
