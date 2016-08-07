@@ -52,7 +52,7 @@ class Dashboard extends Component {
                     <div className="col s3">
                         <h2>State</h2>
                     </div>
-                    <div className="col s1">
+                    <div className="col s1 semaphore-container">
                         <div className={`row ${this.state.active === 'red' ? 'red' : 'grey'} darken-1 circle`}
                             onClick={() => { this._toggleRed() }}/>
                         <div className={`row ${this.state.active === 'yellow' ? 'yellow' : 'grey'} darken-1 circle`}
