@@ -63,6 +63,8 @@ class App extends Component {
                     <div className="col s5">
                         {this.state.selectedMarker && <div>
                             <h3>{this.state.selectedMarker.name}</h3>
+                            <p><strong>Latitude: </strong>{this.state.selectedMarker.latitude}</p>
+                            <p><strong>Longitude: </strong>{this.state.selectedMarker.longitude}</p>
                             <Link className='btn'
                                 to={`/dashboard/${this.state.selectedMarker.id}`}>
                                 Show Dashboard
