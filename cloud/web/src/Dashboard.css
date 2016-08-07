@@ -3,3 +3,12 @@
    height: 50px;
    width: 50px;
 }
+
+g.rd3-linechart-xaxis text,
+g.rd3-linechart-yaxis text {
+    fill: white !important;
+}
+
+.rd3-legend-item {
+    display: none !important;
+}
