@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { GoogleMapLoader, GoogleMap, Marker } from 'react-google-maps';
-import { triggerEvent } from "react-google-maps/lib/utils";
+// import { triggerEvent } from "react-google-maps/lib/utils";
 import { Link } from 'react-router'
 
 import './App.css';
@@ -33,7 +33,7 @@ class App extends Component {
     render() {
         return (
             <div className="container">
-                <h1>Open Semaphore</h1>
+                <h1>Smart Lights</h1>
                 <div className="row row-wrapper">
                     <GoogleMapLoader
                         containerElement={ <div className={this.state.containerMapClass}/> }
