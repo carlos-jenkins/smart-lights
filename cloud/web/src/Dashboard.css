@@ -15,6 +15,7 @@
 g.rd3-linechart-xaxis text,
 g.rd3-linechart-yaxis text {
     fill: white !important;
+    font-size: 20px;
 }
 
 .sensor-wrapper {
