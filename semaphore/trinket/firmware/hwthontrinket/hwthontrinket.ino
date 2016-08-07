@@ -11,11 +11,12 @@ int GAS_SENSOR_PIN = 2;
 int RF_TRANSMITTER_PIN = 12;
 
 byte response_buffer[2];
-uint16_t audio = 0;
-uint16_t gas = 0;
 int read_index = 0;
 
-char sensor;
+uint16_t audio = 0;
+uint16_t gas = 0;
+
+char transmit_command = 'S';
 
 const int sampleWindow = 50;
 unsigned int sample;
@@ -29,6 +30,7 @@ void setup() {
 void loop() {
     audio = readMic();
     gas = readGas();
+    transmitData();
 }
 
 uint16_t readMic() {
@@ -37,7 +39,6 @@ uint16_t readMic() {
     unsigned int signalMax = 0;
     unsigned int signalMin = 1024;
 
-    // collect data for 50 mS
     while (millis() - startMillis < sampleWindow) {
         sample = analogRead(MIC_SENSOR_PIN);
         if (sample < 1024) {
@@ -56,19 +57,24 @@ uint16_t readGas() {
 }
 
 void receiveData(int howMany) {
+    char command = 'U';
     while (0 < Wire.available()) {
-        sensor = Wire.read();
+        command = Wire.read();
     }
-    read_index = 0;
 
     uint16_t result = 0;
-    if (sensor == 'A') {
+    if (command == 'A') {
         result = audio;
-    } else if (sensor == 'G') {
+    } else if (command == 'G') {
         result = 0xFF;
+    } else if (command == 'C' || command == 'S') {
+        transmit_command = command;
     }
+
     response_buffer[0] = (result >> 8) & 0xFF;
     response_buffer[1] = result & 0xFF;
+
+    read_index = 0;
 }
 
 void readData() {
@@ -77,8 +83,7 @@ void readData() {
 }
 
 void transmitData() {
-    const char *msg = "Hello World!!";
-    driver.send((uint8_t *)msg, strlen(msg) + 1);
+    driver.send((uint8_t *)&transmit_command, 1);
     driver.waitPacketSent();
 }
 
