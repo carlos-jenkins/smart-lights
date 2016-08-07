@@ -31,7 +31,7 @@ class Semaphore(object):
         self._green = Matrix8x8(self._busnum, 0x70)
         self._yellow = Matrix8x8(self._busnum, 0x71)
         self._red = Matrix8x8(self._busnum, 0x74)
-        self._trinket = Trinket(self._busnum, 0x77)
+        self._trinket = Trinket(self._busnum, 0x12)
         self._bme280 = BME280(
             self._busnum,
             address=0x77,
@@ -39,7 +39,7 @@ class Semaphore(object):
         )
 
         self._state = None
-        self.set_state(False)
+        self.set_semaphore(False)
 
     def gather_data(self):
         data = {}
