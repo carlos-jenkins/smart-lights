@@ -66,7 +66,7 @@ void receiveData(int howMany) {
     if (command == 'A') {
         result = audio;
     } else if (command == 'G') {
-        result = 0xFF;
+        result = gas;
     } else if (command == 'C') {
         digitalWrite(PIN_IO, LOW);
     } else if (command == 'S') {
