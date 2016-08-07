@@ -46,7 +46,7 @@ module board_plate(
 screw = 3.28;
 screw_cover = 2.33;
 height = 8;
-separation = 63.48;
+separation = 60.76;
 
 // Base plate
 width = 80;
