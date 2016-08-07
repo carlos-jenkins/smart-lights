@@ -6,8 +6,8 @@ class Trinket(I2CDevice):
     _registers = Namespace(**{
         'AUDIO': ord('A'),
         'GAS': ord('G'),
-        'CONTINUE', ord('C'),
-        'STOP', ord('S')
+        'CONTINUE': ord('C'),
+        'STOP': ord('S')
     })
 
     def __init__(self, busnum, address):
