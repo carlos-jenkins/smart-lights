@@ -54,13 +54,12 @@ class Dashboard extends Component {
                     <div className="col s3">
                         <h2>State</h2>
                     </div>
-                    <div className="col s1 semaphore-container">
-                        <div className={`row ${this.state.active === 'red' ? 'red' : 'grey'} darken-1 circle`}
-                            onClick={() => { this._toggleRed() }}/>
-                        <div className={`row ${this.state.active === 'yellow' ? 'yellow' : 'grey'} darken-1 circle`}
-                            onClick={() => { this._toggleYellow() }}/>
-                        <div className={`row ${this.state.active === 'green' ? 'green' : 'grey'} darken-1 circle`}
-                            onClick={() => { this._toggleGreen() }}/>
+                    <div className="col s1">
+                        <div className="trafficlight">
+                            <div className={`red ${this.state.active === 'red' ? '' : 'inactive'}`} onClick={() => { this._toggleRed() }}/>
+                            <div className={`yellow ${this.state.active === 'yellow' ? '' : 'inactive'}`} onClick={() => { this._toggleYellow() }}/>
+                            <div className={`green ${this.state.active === 'green' ? '' : 'inactive'}`} onClick={() => { this._toggleGreen() }}/>
+                        </div>
                     </div>
                 </div>
 
