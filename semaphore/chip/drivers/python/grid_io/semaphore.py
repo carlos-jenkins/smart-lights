@@ -36,6 +36,7 @@ server = Flask('SmartLight')
 def external_state_set(state):
     global external_state
     external_state = state == 0
+    print('Got variable to {}'.format(external_state))
     return ''
 
 
