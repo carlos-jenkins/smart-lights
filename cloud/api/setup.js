@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
 var rethinkDB = require('rethinkdb');
-require('rethinkdb-init')(rethinkDB);
 
 var connection = null;
 
