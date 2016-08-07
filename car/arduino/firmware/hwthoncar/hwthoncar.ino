@@ -1,99 +1,48 @@
-#include <ServoTimer2.h>
-#include <RH_ASK.h>
-#include <SPI.h> // Not actually used but needed to compile RadioHead
+#include <Servo.h>
 
-const int pin_receiver = 11;
-const int pin_left_servo = 10;
-const int pin_right_servo = 9;
-const int pin_led = 4;
-const int pin_switch = 5;
+const int PIN_IO = A0;
+
+const int PIN_LEFT_SERVO = 10;
+const int PIN_RIGHT_SERVO = 9;
+const int PIN_LED = 4;
+const int PIN_LED_IO = 13;
+const int PIN_SWITCH = 5;
 
 
-ServoTimer2 left_servo;
-ServoTimer2 right_servo;
+Servo left_servo;
+Servo right_servo;
 const int STOP = 90;
-const int FULL_SPEED = 180;
-
-
-RH_ASK receiver;
+const int FULL_LEFT = 0;
+const int FULL_RIGHT = 180;
 
 
 void setup() {
-    left_servo.attach(pin_left_servo);
-    right_servo.attach(pin_right_servo);
+    left_servo.attach(PIN_LEFT_SERVO);
+    right_servo.attach(PIN_RIGHT_SERVO);
 
-    pinMode(pin_led, OUTPUT);
-    pinMode(pin_switch, INPUT_PULLUP);
+    pinMode(PIN_IO, INPUT);
+    pinMode(PIN_LED, OUTPUT);
+    pinMode(PIN_SWITCH, INPUT_PULLUP);
 
     Serial.begin(115200);
-    if (!receiver.init()) {
-        Serial.println("Receiver initialization failed!");
-    }
-}
-
-
-char buf[64];
-
-char get_semaphore_state() {
-
-    uint8_t received = sizeof(buf);
-
-    if (receiver.recv((uint8_t *)buf, &received)) {
-
-        // Always terminate the string
-        buf[received] = '\0';
-
-        if (received != 1) {
-            return 'E';
-        }
-
-        // Stop command
-        if (buf[0] == 'S') {
-            return 'S';
-        }
-
-        // Continue command
-        if (buf[0] == 'C') {
-            return 'C';
-        }
-
-        // Unknown command
-        return 'U';
-    }
-
-    // Missing command
-    return 'M';
 }
 
 
 void loop() {
 
-    int switch_state = digitalRead(pin_switch);
+    int switch_state = digitalRead(PIN_SWITCH);
+    int io_state = digitalRead(PIN_IO);
 
-    // If switch is HIGH stop everything
-    if(switch_state == HIGH) {
+    digitalWrite(PIN_LED, switch_state);
+    digitalWrite(PIN_LED_IO, io_state);
 
-        digitalWrite(pin_led, HIGH);
+    if (switch_state || !io_state) {
         left_servo.write(STOP);
         right_servo.write(STOP);
 
     } else {
-
-        digitalWrite(pin_led, LOW);
-        char semaphore_state = get_semaphore_state();
-
-        if (semaphore_state == 'C') {
-            left_servo.write(FULL_SPEED);
-            right_servo.write(FULL_SPEED);
-
-        } else if (semaphore_state == 'S') {
-            left_servo.write(STOP);
-            right_servo.write(STOP);
-
-        } else {
-            Serial.print("Command: ");
-            Serial.println(semaphore_state);
-        }
+         left_servo.write(FULL_LEFT);
+         right_servo.write(FULL_RIGHT);
     }
 }
 

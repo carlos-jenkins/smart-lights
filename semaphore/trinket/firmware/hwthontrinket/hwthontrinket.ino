@@ -1,14 +1,11 @@
 #include <Wire.h>
-#include <RH_ASK.h>
-#include <SPI.h>
 
-RH_ASK driver;
+const int PIN_IO = 12;
+const int PIN_MIC_SENSOR = 3;
+const int PIN_GAS_SENSOR = 2;
+const int PIN_LED = 13;
 
-// I2C Pro Trinket Slave
-
-int MIC_SENSOR_PIN = 3;
-int GAS_SENSOR_PIN = 2;
-int RF_TRANSMITTER_PIN = 12;
+const int I2C_SLAVE_ADDR = 0x12;
 
 byte response_buffer[2];
 int read_index = 0;
@@ -16,13 +13,15 @@ int read_index = 0;
 uint16_t audio = 0;
 uint16_t gas = 0;
 
-char transmit_command = 'S';
-
 const int sampleWindow = 50;
 unsigned int sample;
 
+int led_state = HIGH;
+
 void setup() {
-    Wire.begin(0x12);
+    pinMode(PIN_IO, OUTPUT);
+
+    Wire.begin(I2C_SLAVE_ADDR);
     Wire.onReceive(receiveData);
     Wire.onRequest(readData);
 }
@@ -30,7 +29,6 @@ void setup() {
 void loop() {
     audio = readMic();
     gas = readGas();
-    transmitData();
 }
 
 uint16_t readMic() {
@@ -40,7 +38,7 @@ uint16_t readMic() {
     unsigned int signalMin = 1024;
 
     while (millis() - startMillis < sampleWindow) {
-        sample = analogRead(MIC_SENSOR_PIN);
+        sample = analogRead(PIN_MIC_SENSOR);
         if (sample < 1024) {
             if (sample > signalMax) {
                 signalMax = sample;  // save just the max levels
@@ -53,13 +51,15 @@ uint16_t readMic() {
 }
 
 uint16_t readGas() {
-    return analogRead(GAS_SENSOR_PIN);
+    return analogRead(PIN_GAS_SENSOR);
 }
 
 void receiveData(int howMany) {
     char command = 'U';
     while (0 < Wire.available()) {
         command = Wire.read();
+        digitalWrite(PIN_LED, !led_state);
+        led_state = !led_state;
     }
 
     uint16_t result = 0;
@@ -67,8 +67,10 @@ void receiveData(int howMany) {
         result = audio;
     } else if (command == 'G') {
         result = 0xFF;
-    } else if (command == 'C' || command == 'S') {
-        transmit_command = command;
+    } else if (command == 'C') {
+        digitalWrite(PIN_IO, LOW);
+    } else if (command == 'S') {
+        digitalWrite(PIN_IO, HIGH);
     }
 
     response_buffer[0] = (result >> 8) & 0xFF;
@@ -80,10 +82,5 @@ void receiveData(int howMany) {
 void readData() {
     Wire.write(response_buffer[read_index]);
     read_index++;
-}
-
-void transmitData() {
-    driver.send((uint8_t *)&transmit_command, 1);
-    driver.waitPacketSent();
 }
 

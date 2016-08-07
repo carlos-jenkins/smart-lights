@@ -5,9 +5,9 @@ RH_ASK driver;
 
 void setup()
 {
-    Serial.begin(9600);
+    Serial.begin(115200);
     if (!driver.init())
-         Serial.println("init failed");
+         Serial.println("Initialization failed");
 }
 
 void loop()
