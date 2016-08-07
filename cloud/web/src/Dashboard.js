@@ -15,7 +15,7 @@ class Dashboard extends Component {
         self = this;
         this.state = {
             data: [{
-                audio: '0',
+                audio: '',
                 humidity: '',
                 timestamp: '',
                 pressure: '',
@@ -100,45 +100,109 @@ class Dashboard extends Component {
                 </div>
                 {/* Temperature */ }
                 <div className="row">
-                    <div className="col s12">
-                        <h2>Temperature</h2>
-                    </div>
-                </div>
-                <div className="row">
                     <div className="col s6">
-                        graphic here
+                        <h2>Temperature</h2>
                     </div>
                     <div className="col s6">
                         {semaphore.temperature}
                     </div>
                 </div>
-                {/* Humidity */ }
                 <div className="row">
                     <div className="col s12">
-                        <h2>Humidity</h2>
+                    <LineChart
+                        legend={true}
+                        data={[{
+                                name: 'temperature',
+                                values: _.chain(this.state.data).pluck('temperature')
+                                        .map(function(a, i) { return {
+                                            x: i, y: parseInt(a, 10)
+                                        }}).value(),
+                                strokeWidth: 3,
+                                strokeDashArray: '5,5',
+                        }]}
+                        width='100%'
+                        height={400}
+                        viewBoxObject={{
+                          x: 0,
+                          y: 0,
+                          width: 1000,
+                          height: 400
+                        }}
+                        domain={{x: [,6], y: [-10,]}}
+                        gridHorizontal={true}
+                      />
                     </div>
                 </div>
+                {/* Humidity */ }
                 <div className="row">
                     <div className="col s6">
-                        graphic here
+                        <h2>Humidity</h2>
                     </div>
                     <div className="col s6">
                         {semaphore.humidity}
                     </div>
                 </div>
-                {/* Pressure */ }
                 <div className="row">
                     <div className="col s12">
-                        <h2>Pressure</h2>
+                    <LineChart
+                        legend={true}
+                        data={[{
+                                name: 'humidity',
+                                values: _.chain(this.state.data).pluck('humidity')
+                                        .map(function(a, i) { return {
+                                            x: i, y: parseInt(a, 10)
+                                        }}).value(),
+                                strokeWidth: 3,
+                                strokeDashArray: '5,5',
+                        }]}
+                        width='100%'
+                        height={400}
+                        viewBoxObject={{
+                          x: 0,
+                          y: 0,
+                          width: 1000,
+                          height: 400
+                        }}
+                        domain={{x: [,6], y: [-10,]}}
+                        gridHorizontal={true}
+                      />
                     </div>
                 </div>
+                {/* Pressure */ }
                 <div className="row">
                     <div className="col s6">
-                        graphic here
+                        <h2>Pressure</h2>
                     </div>
                     <div className="col s6">
                         {semaphore.pressure}
                     </div>
+                </div>
+                <div className="row">
+                    <div className="col s12">
+                    <LineChart
+                        legend={true}
+                        data={[{
+                                name: 'pressure',
+                                values: _.chain(this.state.data).pluck('pressure')
+                                        .map(function(a, i) { return {
+                                            x: i, y: parseInt(a, 10)
+                                        }}).value(),
+                                strokeWidth: 3,
+                                strokeDashArray: '5,5',
+                        }]}
+                        width='100%'
+                        height={400}
+                        viewBoxObject={{
+                          x: 0,
+                          y: 0,
+                          width: 1000,
+                          height: 400
+                        }}
+                        domain={{x: [,6], y: [-10,]}}
+                        gridHorizontal={true}
+                      />
+                    </div>
+
                 </div>
             </div>
         );
