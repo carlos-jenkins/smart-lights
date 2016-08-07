@@ -21,7 +21,6 @@ class Trinket(I2CDevice):
         a = self.read()
         b = self.read()
         audio = (a << 8) | b;
-        print audio
         return audio
 
 
@@ -33,7 +32,6 @@ class Trinket(I2CDevice):
         a = self.read()
         b = self.read()
         gas = (a << 8) | b;
-        print gas
         return gas
 
     def write_semaphore_state(self, state):
