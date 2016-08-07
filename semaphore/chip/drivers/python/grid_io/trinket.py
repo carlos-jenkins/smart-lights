@@ -5,7 +5,9 @@ class Trinket(I2CDevice):
 
     _registers = Namespace(**{
         'AUDIO': ord('A'),
-        'GAS': ord('G')
+        'GAS': ord('G'),
+        'CONTINUE', ord('C'),
+        'STOP', ord('S')
     })
 
     def __init__(self, busnum, address):
@@ -15,7 +17,11 @@ class Trinket(I2CDevice):
         """
         Reads the audio from mic plugged into Trinket.
         """
-        audio = self.register_read_u16(Trinket._registers.AUDIO)
+        self.write(Trinket._registers.AUDIO)
+        a = self.read()
+        b = self.read()
+        audio = (a << 8) | b;
+        print audio
         return audio
 
 
@@ -23,14 +29,21 @@ class Trinket(I2CDevice):
         """
         Reads the gas levels from sensor plugged into Trinket.
         """
-        gas = self.register_read_u16(Trinket._registers.GAS)
+        self.write(Trinket._registers.GAS)
+        a = self.read()
+        b = self.read()
+        gas = (a << 8) | b;
+        print gas
         return gas
 
-    def write_transmitter(self, state):
+    def write_semaphore_state(self, state):
         """
         Sends a value for the transmitter to transmit.
         """
-        self.register_write_u8(Trinket._registers.TRINKET, state)
+        if state:
+            self.write(Trinket._registers.CONTINUE)
+        else:
+            self.write(Trinket._registers.STOP)
 
 
 __all__ = ['Trinket']
