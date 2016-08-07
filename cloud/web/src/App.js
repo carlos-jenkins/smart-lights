@@ -77,9 +77,12 @@ class App extends Component {
     }
 
     _onMarkerClick(marker) {
+        var isSameMarker =  this.state.selectedMarker === marker;
+        var containerMapClass = (isSameMarker || this.state.selectedMarker) ?
+                                'col s12 map-container' : 'col s7 map-container';
         this.setState({
-            selectedMarker: marker,
-            containerMapClass: 'col s7 map-container'
+            selectedMarker: isSameMarker ? null : marker,
+            containerMapClass: containerMapClass
         })
         // triggerEvent(this._map, 'resize');
     }
