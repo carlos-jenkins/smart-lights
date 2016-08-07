@@ -33,5 +33,5 @@ def test_trinket_transmitter():
 
     sensor = Trinket(2, 18)
 
-    write_semaphore_state(True)
-    write_semaphore_state(False)
+    sensor.write_semaphore_state(True)
+    sensor.write_semaphore_state(False)
