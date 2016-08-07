@@ -1,8 +1,5 @@
-.row-wrapper {
-    height: 800px; /*Fix this*/
-}
-.map-container {
-    height: 100%;
-    position: relative;
-    overflow: hidden;
+.circle {
+   border-radius: 50%;
+   height: 50px;
+   width: 50px;
 }

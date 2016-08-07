@@ -24,7 +24,8 @@ class Dashboard extends Component {
     constructor(props, context) {
         super(props, context);
         this.state = {
-            semaphore: semaphore_data
+            semaphore: semaphore_data,
+            active: semaphore_data.state
         }
 
         self = this;
@@ -42,6 +43,8 @@ class Dashboard extends Component {
         var semaphore = this.state.semaphore;
         var data = semaphore.data;
 
+        console.log(this.state.active);
+
         return (
             <div className="container">
                 <div className="row">
@@ -50,6 +53,20 @@ class Dashboard extends Component {
                     </div>
                     <div className="col s6">
                         <h5>{this.state.date}</h5>
+                    </div>
+                </div>
+
+                <div className="row">
+                    <div className="col s3">
+                        <h2>State</h2>
+                    </div>
+                    <div className="col s1">
+                        <div className={`row ${this.state.active === 'red' ? 'red' : 'grey'} darken-1 circle`}
+                            onClick={() => { this._toggleRed() }}/>
+                        <div className={`row ${this.state.active === 'yellow' ? 'yellow' : 'grey'} darken-1 circle`}
+                            onClick={() => { this._toggleYellow() }}/>
+                        <div className={`row ${this.state.active === 'green' ? 'green' : 'grey'} darken-1 circle`}
+                            onClick={() => { this._toggleGreen() }}/>
                     </div>
                 </div>
 
@@ -115,6 +132,18 @@ class Dashboard extends Component {
 
     _tick() {
         self.setState({date: moment().format('MMMM Do YYYY, h:mm:ss a')});
+    }
+
+    _toggleGreen() {
+        this.setState({ active: 'green' });
+    }
+
+    _toggleRed() {
+        this.setState({ active: 'red' });
+    }
+
+    _toggleYellow() {
+        this.setState({ active: 'yellow' });
     }
 }
 
