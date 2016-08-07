@@ -21,11 +21,10 @@ from grid_io.trinket import Trinket
 
 def test_trinket_read_sensor():
 
-    sensor = Trinket(2, address=18)
+    sensor = Trinket(2, 18)
 
     noise = sensor.read_audio()
     gas = sensor.read_gas();
 
-    print('Timestamp = {0:0.3f}'.format(sensor.t_fine))
-    print('Noise      = {0:0.3f} dB'.format(noise))
-    print('Gas  = {0:0.2f} '.format(gas))
+    print('Noise = {0}:{0:016b} dB'.format(noise))
+    print('Gas  = {0}:{0:016b} '.format(gas))
