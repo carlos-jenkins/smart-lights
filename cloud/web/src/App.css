@@ -6,3 +6,7 @@
     position: relative;
     overflow: hidden;
 }
+
+.title {
+    margin: 20px;
+}

@@ -33,7 +33,11 @@ class App extends Component {
     render() {
         return (
             <div className="container">
-                <h1>Smart Lights</h1>
+                <div className="row">
+                    <div className="col s12 title">
+                        <h1>Smart Lights</h1>
+                    </div>
+                </div>
                 <div className="row row-wrapper">
                     <GoogleMapLoader
                         containerElement={ <div className={this.state.containerMapClass}/> }
