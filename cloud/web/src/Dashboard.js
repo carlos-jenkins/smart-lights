@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import moment from 'moment';
+import rd3 from 'rd3';
 import _ from 'underscore';
 
 import api from './helpers/api';
 import './Dashboard.css';
 
+const LineChart = rd3.LineChart;
 var self;
 
 class Dashboard extends Component {
@@ -13,20 +15,20 @@ class Dashboard extends Component {
         self = this;
         this.state = {
             data: [{
-                audio: '',
+                audio: '0',
                 humidity: '',
                 timestamp: '',
                 pressure: '',
                 state: '',
                 gas: '',
                 id_semaphore: '',
-                temperature: '',
+                temperature: ''
             }]
         }
     }
 
     componentDidMount() {
-        this._timer = setInterval(this._tick, 5000);
+        this._timer = setInterval(this._tick, 1000);
     }
 
     componentWillUnmount() {
@@ -35,7 +37,6 @@ class Dashboard extends Component {
 
     render() {
         var semaphore = _.last(this.state.data);
-
         return (
             <div className="container">
                 <div className="row">
@@ -63,17 +64,39 @@ class Dashboard extends Component {
 
                 {/* Noise */ }
                 <div className="row">
-                    <div className="col s12">
+                    <div className="col s9">
                         <h2>Noise</h2>
+                    </div>
+                    <div className="col s3">
+                        <h5>{`${semaphore.audio} dB`}</h5>
                     </div>
                 </div>
                 <div className="row">
-                    <div className="col s6">
-                        graphic here
+                    <div className="col s12">
+                    <LineChart
+                        legend={true}
+                        data={[{
+                                name: 'audio',
+                                values: _.chain(this.state.data).pluck('audio')
+                                        .map(function(a, i) { return {
+                                            x: i, y: parseInt(a, 10)
+                                        }}).value(),
+                                strokeWidth: 3,
+                                strokeDashArray: '5,5',
+                        }]}
+                        width='100%'
+                        height={400}
+                        viewBoxObject={{
+                          x: 0,
+                          y: 0,
+                          width: 1000,
+                          height: 400
+                        }}
+                        domain={{x: [,6], y: [-10,]}}
+                        gridHorizontal={true}
+                      />
                     </div>
-                    <div className="col s6">
-                        {semaphore.audio}
-                    </div>
+
                 </div>
                 {/* Temperature */ }
                 <div className="row">
