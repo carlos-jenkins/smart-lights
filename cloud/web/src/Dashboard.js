@@ -81,28 +81,28 @@ class Dashboard extends Component {
                 </div>
                 <div className="row">
                     <div className="col s12">
-                    <LineChart
-                        legend={true}
-                        data={[{
-                                name: 'audio',
-                                values: _.chain(this.state.data).pluck('audio')
-                                        .map(function(a, i) { return {
-                                            x: i, y: parseInt(a, 10)
-                                        }}).value(),
-                                strokeWidth: 3,
-                                strokeDashArray: '5,5',
-                        }]}
-                        width='100%'
-                        height={400}
-                        viewBoxObject={{
-                          x: 0,
-                          y: 0,
-                          width: 1000,
-                          height: 400
-                        }}
-                        domain={{x: [,6], y: [-10,]}}
-                        gridHorizontal={true}
-                      />
+                        <LineChart
+                            legend={true}
+                            data={[{
+                                    name: 'audio',
+                                    values: _.chain(this.state.data).pluck('audio')
+                                            .map(function(a, i) { return {
+                                                x: i, y: parseInt(a, 10)
+                                            }}).value(),
+                                    strokeWidth: 3,
+                                    strokeDashArray: '5,5',
+                            }]}
+                            width='100%'
+                            height={400}
+                            viewBoxObject={{
+                              x: 0,
+                              y: 0,
+                              width: 1000,
+                              height: 400
+                            }}
+                            domain={{x: [,6], y: [-10,]}}
+                            gridHorizontal={true}
+                          />
                     </div>
 
                 </div>
@@ -121,28 +121,28 @@ class Dashboard extends Component {
                 </div>
                 <div className="row">
                     <div className="col s12">
-                    <LineChart
-                        legend={true}
-                        data={[{
-                                name: 'temperature',
-                                values: _.chain(this.state.data).pluck('temperature')
-                                        .map(function(a, i) { return {
-                                            x: i, y: parseInt(a, 10)
-                                        }}).value(),
-                                strokeWidth: 3,
-                                strokeDashArray: '5,5',
-                        }]}
-                        width='100%'
-                        height={400}
-                        viewBoxObject={{
-                          x: 0,
-                          y: 0,
-                          width: 1000,
-                          height: 400
-                        }}
-                        domain={{x: [,6], y: [-10,]}}
-                        gridHorizontal={true}
-                      />
+                        <LineChart
+                            legend={true}
+                            data={[{
+                                    name: 'temperature',
+                                    values: _.chain(this.state.data).pluck('temperature')
+                                            .map(function(a, i) { return {
+                                                x: i, y: parseInt(a, 10)
+                                            }}).value(),
+                                    strokeWidth: 3,
+                                    strokeDashArray: '5,5',
+                            }]}
+                            width='100%'
+                            height={400}
+                            viewBoxObject={{
+                              x: 0,
+                              y: 0,
+                              width: 1000,
+                              height: 400
+                            }}
+                            domain={{x: [,6], y: [-10,]}}
+                            gridHorizontal={true}
+                          />
                     </div>
                 </div>
                 {/* Humidity */ }
@@ -160,28 +160,28 @@ class Dashboard extends Component {
                 </div>
                 <div className="row">
                     <div className="col s12">
-                    <LineChart
-                        legend={true}
-                        data={[{
-                                name: 'humidity',
-                                values: _.chain(this.state.data).pluck('humidity')
-                                        .map(function(a, i) { return {
-                                            x: i, y: parseInt(a, 10)
-                                        }}).value(),
-                                strokeWidth: 3,
-                                strokeDashArray: '5,5',
-                        }]}
-                        width='100%'
-                        height={400}
-                        viewBoxObject={{
-                          x: 0,
-                          y: 0,
-                          width: 1000,
-                          height: 400
-                        }}
-                        domain={{x: [,6], y: [-10,]}}
-                        gridHorizontal={true}
-                      />
+                        <LineChart
+                            legend={true}
+                            data={[{
+                                    name: 'humidity',
+                                    values: _.chain(this.state.data).pluck('humidity')
+                                            .map(function(a, i) { return {
+                                                x: i, y: parseInt(a, 10)
+                                            }}).value(),
+                                    strokeWidth: 3,
+                                    strokeDashArray: '5,5',
+                            }]}
+                            width='100%'
+                            height={400}
+                            viewBoxObject={{
+                              x: 0,
+                              y: 0,
+                              width: 1000,
+                              height: 400
+                            }}
+                            domain={{x: [,6], y: [-10,]}}
+                            gridHorizontal={true}
+                          />
                     </div>
                 </div>
                 {/* Pressure */ }
@@ -199,28 +199,28 @@ class Dashboard extends Component {
                 </div>
                 <div className="row">
                     <div className="col s12">
-                    <LineChart
-                        legend={true}
-                        data={[{
-                                name: 'pressure',
-                                values: _.chain(this.state.data).pluck('pressure')
-                                        .map(function(a, i) { return {
-                                            x: i, y: parseInt(a, 10)
-                                        }}).value(),
-                                strokeWidth: 3,
-                                strokeDashArray: '5,5',
-                        }]}
-                        width='100%'
-                        height={400}
-                        viewBoxObject={{
-                          x: 0,
-                          y: 0,
-                          width: 1000,
-                          height: 400
-                        }}
-                        domain={{x: [,6], y: [-10,]}}
-                        gridHorizontal={true}
-                      />
+                        <LineChart
+                            legend={true}
+                            data={[{
+                                    name: 'pressure',
+                                    values: _.chain(this.state.data).pluck('pressure')
+                                            .map(function(a, i) { return {
+                                                x: i, y: parseInt(a, 10)
+                                            }}).value(),
+                                    strokeWidth: 3,
+                                    strokeDashArray: '5,5',
+                            }]}
+                            width='100%'
+                            height={400}
+                            viewBoxObject={{
+                              x: 0,
+                              y: 0,
+                              width: 1000,
+                              height: 400
+                            }}
+                            domain={{x: [,6], y: [-10,]}}
+                            gridHorizontal={true}
+                          />
                     </div>
                 </div>
             </div>
