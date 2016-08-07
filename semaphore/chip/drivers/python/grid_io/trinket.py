@@ -1,5 +1,24 @@
-from .i2c import I2CDevice
+# -*- coding: utf-8 -*-
+#
+# Copyright (C) 2016 Carlos Jenkins
+# Copyright (C) 2016 Carolina Aguilar
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing,
+# software distributed under the License is distributed on an
+# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+# KIND, either express or implied.  See the License for the
+# specific language governing permissions and limitations
+# under the License.
+
 from argparse import Namespace
+from .i2c import I2CDevice
+
 
 class Trinket(I2CDevice):
 
@@ -20,7 +39,7 @@ class Trinket(I2CDevice):
         self.write(Trinket._registers.AUDIO)
         a = self.read()
         b = self.read()
-        audio = (a << 8) | b;
+        audio = (a << 8) | b
         return audio
 
     def read_gas(self):
@@ -30,7 +49,7 @@ class Trinket(I2CDevice):
         self.write(Trinket._registers.GAS)
         a = self.read()
         b = self.read()
-        gas = (a << 8) | b;
+        gas = (a << 8) | b
         return gas
 
     def write_semaphore_state(self, state):
