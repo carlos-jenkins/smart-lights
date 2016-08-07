@@ -29,6 +29,18 @@ from .matrix8x8 import Matrix8x8
 
 
 external_state = False
+server = Flask('SmartLight {}'.format(self._semaphore_id))
+
+
+@server.route('/state/<int:state>')
+def external_state_set(state):
+    global external_state
+    external_state = state == 0
+    return ''
+
+
+def server_start():
+    server.run(host=host, port=port, debug=False)
 
 
 class Semaphore(object):
@@ -103,26 +115,17 @@ class Semaphore(object):
         semaphore_data['state'] = self._state
         semaphore_data.update(self.gather_data())
         post(self.uri, data=semaphore_data)
+        print(semaphore_data)
 
     def start(self, host='0.0.0.0', port=8080):
-
-        global external_state
-        server = Flask('SmartLight {}'.format(self._semaphore_id))
-
-        @server.route('/state/<int:state>')
-        def external_state_set(state):
-            global external_state
-            external_state = state == 0
-            return ''
-
-        def server_start():
-            server.run(host=host, port=port, debug=False)
 
         server_thread = Thread(target=server_start)
         server_thread.start()
 
         while True:
+            global external_state
             self.set_semaphore(external_state)
+            print('Semaphore is set to: {}'.format(external_state))
             self.send_data()
 
 
