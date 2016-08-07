@@ -59,7 +59,7 @@ module.exports = {
     setSemaphoreState: function(params, callback) {
         var pythonServer = 'http://192.168.8.101:8080';
         request
-           .post(pythonServer + '/state/' + params.state)
+           .get(pythonServer + '/state/' + params.state)
            .set('Accept', 'application/json')
            .end(function(err, res) {
                callback && callback(err, JSON.parse(res.text))
