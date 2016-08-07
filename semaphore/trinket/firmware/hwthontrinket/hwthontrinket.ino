@@ -10,8 +10,10 @@ int MIC_SENSOR_PIN = 3;
 int GAS_SENSOR_PIN = 2;
 int RF_TRANSMITTER_PIN = 12;
 
+byte response_buffer[2];
 uint16_t audio = 0;
 uint16_t gas = 0;
+int read_index = 0;
 
 char sensor;
 
@@ -19,20 +21,14 @@ const int sampleWindow = 50;
 unsigned int sample;
 
 void setup() {
-    Wire.begin(12);
+    Wire.begin(18);
     Wire.onReceive(receiveData);
     Wire.onRequest(readData);
-
-    Serial.begin(9600);
 }
 
 void loop() {
     audio = readMic();
-    Serial.print("Audio: ");
-    Serial.println(audio);
     gas = readGas();
-    Serial.print("Gas: ");
-    Serial.println(gas);
 }
 
 uint16_t readMic() {
@@ -60,34 +56,24 @@ uint16_t readGas() {
 }
 
 void receiveData(int howMany) {
-    Serial.print("howMany: ");
-    Serial.println(howMany);
     while (0 < Wire.available()) {
         sensor = Wire.read();
-
-        Serial.print("Receive Data: ");
-        Serial.println(sensor);
     }
-}
+    read_index = 0;
 
-void readData() {
-    byte response_buffer[2];
     uint16_t result = 0;
-
     if (sensor == 'A') {
         result = audio;
     } else if (sensor == 'G') {
-        result = gas;
-    } else if (sensor == 'T') {
-        transmitData();
+        result = 0xFF;
     }
-
-    Serial.print("Read Data: ");
-    Serial.println(result);
-    
     response_buffer[0] = (result >> 8) & 0xFF;
     response_buffer[1] = result & 0xFF;
-    Wire.write(response_buffer, 2);
+}
+
+void readData() {
+    Wire.write(response_buffer[read_index]);
+    read_index++;
 }
 
 void transmitData() {

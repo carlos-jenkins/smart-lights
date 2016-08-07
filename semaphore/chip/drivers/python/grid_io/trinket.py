@@ -23,7 +23,6 @@ class Trinket(I2CDevice):
         audio = (a << 8) | b;
         return audio
 
-
     def read_gas(self):
         """
         Reads the gas levels from sensor plugged into Trinket.
