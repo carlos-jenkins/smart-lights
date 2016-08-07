@@ -67,7 +67,7 @@ class Semaphore(object):
         else:
             self._green.fill(True)
             self._green.flush()
-            self._green.set_blink_rate(Matrix8x8.BLINK_HALFHZ)
+            self._green.set_blink_rate(Matrix8x8.BLINK_2HZ)
             sleep(3)
             self._green.clear()
             self._green.flush()
