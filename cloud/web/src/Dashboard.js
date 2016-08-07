@@ -25,6 +25,7 @@ class Dashboard extends Component {
                 temperature: '0.0'
             }],
             showAudio: false,
+            showGas: false,
             showTemperature: false,
             showHumidity: false,
             showPressure: false
@@ -45,6 +46,7 @@ class Dashboard extends Component {
         var temperature = parseFloat(semaphore.temperature);
         var humidity = parseFloat(semaphore.humidity);
         var pressure = parseFloat(semaphore.pressure) / 100;
+        var gas = parseInt(semaphore.gas);
 
         return (
             <div className="container">
@@ -62,9 +64,9 @@ class Dashboard extends Component {
                         </div>
                         <div className="col s3">
                             <div className="trafficlight">
-                                <div className={`red ${this.state.active === 'red' ? '' : 'inactive'}`} onClick={() => { this._toggleRed() }}/>
-                                <div className={`yellow ${this.state.active === 'yellow' ? '' : 'inactive'}`} onClick={() => { this._toggleYellow() }}/>
-                                <div className={`green ${this.state.active === 'green' ? '' : 'inactive'}`} onClick={() => { this._toggleGreen() }}/>
+                                <div className={`red ${!semaphore.state ? '' : 'inactive'}`} onClick={() => { this._toggleRed() }}/>
+                                <div className={'yellow inactive'} onClick={() => { this._toggleYellow() }}/>
+                                <div className={`green ${semaphore.state ? '' : 'inactive'}`} onClick={() => { this._toggleGreen() }}/>
                             </div>
                         </div>
                         <div className="col s6">
@@ -95,6 +97,47 @@ class Dashboard extends Component {
                                         name: 'audio',
                                         values: _.chain(this.state.data).pluck('audio')
                                                 .map(function(a, i) { return {
+                                                    x: i, y: parseInt(a, 10) / 10
+                                                }}).value(),
+                                        strokeWidth: 3,
+                                        strokeDashArray: '5,5',
+                                }]}
+                                width='100%'
+                                height={400}
+                                viewBoxObject={{
+                                  x: 0,
+                                  y: 0,
+                                  width: 1000,
+                                  height: 400
+                                }}
+                                domain={{x: [,6], y: [-10,]}}
+                                gridHorizontal={true}
+                                hoverAnimation={false}
+                              />
+                        </div>
+                    </div>}
+                </div>
+                {/* Gas */ }
+                <div className="sensor-wrapper" onClick={() => { this.setState({showGas: !this.state.showGas}) }}>
+                    <div className="row">
+                        <div className="col s6">
+                            <h2>Pollution <i className="material-icons expand-more"><h2>{this.state.showGas ? 'expand_less' : 'expand_more'}</h2></i></h2>
+                        </div>
+                        <div className="col s6">
+                            <div className="circle-outer">
+                                <div className="circle-inner">
+                                    {gas}<strong>??</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {this.state.showGas && <div className="row">
+                        <div className="col s12">
+                            <LineChart
+                                data={[{
+                                        name: 'gas',
+                                        values: _.chain(this.state.data).pluck('gas')
+                                                .map(function(a, i) { return {
                                                     x: i, y: parseInt(a, 10)
                                                 }}).value(),
                                         strokeWidth: 3,
@@ -110,6 +153,7 @@ class Dashboard extends Component {
                                 }}
                                 domain={{x: [,6], y: [-10,]}}
                                 gridHorizontal={true}
+                                hoverAnimation={false}
                               />
                         </div>
                     </div>}
@@ -151,6 +195,7 @@ class Dashboard extends Component {
                                 }}
                                 domain={{x: [,6], y: [-10,]}}
                                 gridHorizontal={true}
+                                hoverAnimation={false}
                               />
                         </div>
                     </div>}
@@ -213,12 +258,12 @@ class Dashboard extends Component {
                     {this.state.showPressure && <div className="row">
                         <div className="col s12">
                             <LineChart
-                                legend={true}
+                                legend={false}
                                 data={[{
                                         name: 'pressure',
                                         values: _.chain(this.state.data).pluck('pressure')
                                                 .map(function(a, i) { return {
-                                                    x: i, y: parseInt(a, 10)
+                                                    x: i, y: parseInt(a, 10) / 100
                                                 }}).value(),
                                         strokeWidth: 3,
                                         strokeDashArray: '5,5',
@@ -233,6 +278,7 @@ class Dashboard extends Component {
                                 }}
                                 domain={{x: [,6], y: [-10,]}}
                                 gridHorizontal={true}
+                                hoverAnimation={false}
                               />
                         </div>
                     </div>}
