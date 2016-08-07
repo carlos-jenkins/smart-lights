@@ -21,7 +21,7 @@ from grid_io.trinket import Trinket
 
 def test_trinket_read_sensor():
 
-    sensor = Trinket(2, 18)
+    sensor = Trinket(2, 0x12)
 
     noise = sensor.read_audio()
     gas = sensor.read_gas();
@@ -31,7 +31,7 @@ def test_trinket_read_sensor():
 
 def test_trinket_transmitter():
 
-    sensor = Trinket(2, 18)
+    sensor = Trinket(2, 0x12)
 
     sensor.write_semaphore_state(True)
     sensor.write_semaphore_state(False)

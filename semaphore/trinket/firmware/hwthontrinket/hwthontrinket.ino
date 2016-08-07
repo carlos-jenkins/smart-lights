@@ -22,7 +22,7 @@ const int sampleWindow = 50;
 unsigned int sample;
 
 void setup() {
-    Wire.begin(18);
+    Wire.begin(0x12);
     Wire.onReceive(receiveData);
     Wire.onRequest(readData);
 }
