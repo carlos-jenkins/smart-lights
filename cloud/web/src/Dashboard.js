@@ -77,7 +77,7 @@ class Dashboard extends Component {
                 <div className="sensor-wrapper" onClick={() => { this.setState({showAudio: !this.state.showAudio}) }}>
                     <div className="row">
                         <div className="col s6">
-                            <h2>Noise <i className="material-icons expand-more"><h2>expand_more</h2></i></h2>
+                            <h2>Noise <i className="material-icons expand-more"><h2>{this.state.showAudio ? 'expand_less' : 'expand_more'}</h2></i></h2>
                         </div>
                         <div className="col s6">
                             <div className="circle-outer">
@@ -118,7 +118,7 @@ class Dashboard extends Component {
                 <div className="sensor-wrapper" onClick={() => { this.setState({showTemperature: !this.state.showTemperature}) }}>
                     <div className="row">
                         <div className="col s6">
-                            <h2>Temperature <i className="material-icons expand-more"><h2>expand_more</h2></i></h2>
+                            <h2>Temperature <i className="material-icons expand-more"><h2>{this.state.showTemperature ? 'expand_less' : 'expand_more'}</h2></i></h2>
                         </div>
                         <div className="col s6">
                             <div className="circle-outer thermometer-outer">
@@ -159,7 +159,7 @@ class Dashboard extends Component {
                 <div className="sensor-wrapper" onClick={() => { this.setState({showHumidity: !this.state.showHumidity}) }}>
                     <div className="row">
                         <div className="col s6">
-                            <h2>Humidity <i className="material-icons expand-more"><h2>expand_more</h2></i></h2>
+                            <h2>Humidity <i className="material-icons expand-more"><h2>{this.state.showHumidity ? 'expand_less' : 'expand_more'}</h2></i></h2>
                         </div>
                         <div className="col s6">
                             <div className="circle-outer">
@@ -200,7 +200,7 @@ class Dashboard extends Component {
                 <div className="sensor-wrapper" onClick={() => { this.setState({showPressure: !this.state.showPressure}) }}>
                     <div className="row">
                         <div className="col s6">
-                            <h2>Pressure <i className="material-icons expand-more"><h2>expand_more</h2></i></h2>
+                            <h2>Pressure <i className="material-icons expand-more"><h2>{this.state.showPressure ? 'expand_less' : 'expand_more'}</h2></i></h2>
                         </div>
                         <div className="col s6">
                             <div className="circle-outer">
