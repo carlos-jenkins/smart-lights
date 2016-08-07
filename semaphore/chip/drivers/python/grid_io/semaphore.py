@@ -37,7 +37,7 @@ def external_state_set(state):
     global external_state
     external_state = state == 0
     print('Got variable to {}'.format(external_state))
-    return ''
+    return 'Variable set to {}'.format(external_state)
 
 
 class Semaphore(object):
@@ -118,6 +118,8 @@ class Semaphore(object):
 
         def server_start():
             global server
+            global external_state
+            print('External state at start is {}'.format(external_state))
             server.run(host=host, port=port, debug=False)
 
         server_thread = Thread(target=server_start)
