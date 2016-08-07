@@ -24,7 +24,7 @@ g.rd3-linechart-yaxis text {
     margin: 40px;
     box-shadow: outset 0 1px 5px rgba(0, 0, 0, .5), 0 1px 5px rgba(255, 255, 255, 1);
 }
-
+g.rd3-linechart-xaxis,
 .rd3-legend-item {
     display: none !important;
 }
@@ -71,6 +71,10 @@ g.rd3-linechart-yaxis text {
     position: absolute;
     top: 25px;
     font-size: 34px;
+}
+
+.unit-measure {
+    font-size: 46px;
 }
 
 .trafficlight {

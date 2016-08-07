@@ -56,7 +56,7 @@ class Dashboard extends Component {
                     </div>
 
                 </div>
-
+                {/* State */}
                 <div className="sensor-wrapper">
                     <div className="row">
                         <div className="col s3">
@@ -64,9 +64,9 @@ class Dashboard extends Component {
                         </div>
                         <div className="col s3">
                             <div className="trafficlight">
-                                <div className={`red ${!semaphore.state ? '' : 'inactive'}`} onClick={() => { this._toggleRed() }}/>
+                                <div className={`red ${semaphore.state ? '' : 'inactive'}`} onClick={() => { this._toggleRed() }}/>
                                 <div className={'yellow inactive'} onClick={() => { this._toggleYellow() }}/>
-                                <div className={`green ${semaphore.state ? '' : 'inactive'}`} onClick={() => { this._toggleGreen() }}/>
+                                <div className={`green ${!semaphore.state ? '' : 'inactive'}`} onClick={() => { this._toggleGreen() }}/>
                             </div>
                         </div>
                         <div className="col s6">
@@ -78,15 +78,18 @@ class Dashboard extends Component {
                 {/* Noise */ }
                 <div className="sensor-wrapper" onClick={() => { this.setState({showAudio: !this.state.showAudio}) }}>
                     <div className="row">
-                        <div className="col s6">
+                        <div className="col s8">
                             <h2>Noise <i className="material-icons expand-more"><h2>{this.state.showAudio ? 'expand_less' : 'expand_more'}</h2></i></h2>
                         </div>
-                        <div className="col s6">
+                        <div className="col s2">
                             <div className="circle-outer">
                                 <div className="circle-inner">
-                                    {Math.floor(audio/10)}<strong>dB</strong>
+                                    {Math.floor(audio/10)}
                                 </div>
                             </div>
+                        </div>
+                        <div className="col s2">
+                            <h2 className="unit-measure"><strong>dB</strong></h2>
                         </div>
                     </div>
                     {this.state.showAudio && <div className="row">
@@ -110,8 +113,7 @@ class Dashboard extends Component {
                                   width: 1000,
                                   height: 400
                                 }}
-                                domain={{x: [,6], y: [-10,]}}
-                                gridHorizontal={true}
+                                domain={{x: [], y: [-10,]}}
                                 hoverAnimation={false}
                               />
                         </div>
@@ -120,13 +122,13 @@ class Dashboard extends Component {
                 {/* Gas */ }
                 <div className="sensor-wrapper" onClick={() => { this.setState({showGas: !this.state.showGas}) }}>
                     <div className="row">
-                        <div className="col s6">
+                        <div className="col s8">
                             <h2>Pollution <i className="material-icons expand-more"><h2>{this.state.showGas ? 'expand_less' : 'expand_more'}</h2></i></h2>
                         </div>
-                        <div className="col s6">
+                        <div className="col s2">
                             <div className="circle-outer">
                                 <div className="circle-inner">
-                                    {gas}<strong>??</strong>
+                                    {gas}
                                 </div>
                             </div>
                         </div>
@@ -151,8 +153,7 @@ class Dashboard extends Component {
                                   width: 1000,
                                   height: 400
                                 }}
-                                domain={{x: [,6], y: [-10,]}}
-                                gridHorizontal={true}
+                                domain={{x: [], y: [-10,]}}
                                 hoverAnimation={false}
                               />
                         </div>
@@ -161,15 +162,18 @@ class Dashboard extends Component {
                 {/* Temperature */ }
                 <div className="sensor-wrapper" onClick={() => { this.setState({showTemperature: !this.state.showTemperature}) }}>
                     <div className="row">
-                        <div className="col s6">
+                        <div className="col s8">
                             <h2>Temperature <i className="material-icons expand-more"><h2>{this.state.showTemperature ? 'expand_less' : 'expand_more'}</h2></i></h2>
                         </div>
-                        <div className="col s6">
+                        <div className="col s2">
                             <div className="circle-outer thermometer-outer">
                                 <div className="circle-inner">
-                                    {Math.floor(temperature)}<span>{`.${Math.round((temperature.toFixed(1) % 1) * 10)}`}</span><strong>&deg;</strong>
+                                    {Math.floor(temperature)}<span>{`.${Math.round((temperature.toFixed(1) % 1) * 10)}`}</span>
                                 </div>
                             </div>
+                        </div>
+                        <div className="col s2">
+                            <h2 className="unit-measure"><strong>&deg;</strong></h2>
                         </div>
                     </div>
                     {this.state.showTemperature && <div className="row">
@@ -193,8 +197,7 @@ class Dashboard extends Component {
                                   width: 1000,
                                   height: 400
                                 }}
-                                domain={{x: [,6], y: [-10,]}}
-                                gridHorizontal={true}
+                                domain={{x: [], y: [-10,]}}
                                 hoverAnimation={false}
                               />
                         </div>
@@ -203,15 +206,18 @@ class Dashboard extends Component {
                 {/* Humidity */ }
                 <div className="sensor-wrapper" onClick={() => { this.setState({showHumidity: !this.state.showHumidity}) }}>
                     <div className="row">
-                        <div className="col s6">
+                        <div className="col s8">
                             <h2>Humidity <i className="material-icons expand-more"><h2>{this.state.showHumidity ? 'expand_less' : 'expand_more'}</h2></i></h2>
                         </div>
-                        <div className="col s6">
+                        <div className="col s2">
                             <div className="circle-outer">
                                 <div className="circle-inner">
-                                    {Math.floor(humidity)}<span>{`.${Math.round((humidity.toFixed(1) % 1) * 10)}`}</span><strong>%</strong>
+                                    {Math.floor(humidity)}<span>{`.${Math.round((humidity.toFixed(1) % 1) * 10)}`}</span>
                                 </div>
                             </div>
+                        </div>
+                        <div className="col s2">
+                            <h2 className="unit-measure"><strong>%</strong></h2>
                         </div>
                     </div>
                     {this.state.showHumidity && <div className="row">
@@ -235,8 +241,8 @@ class Dashboard extends Component {
                                   width: 1000,
                                   height: 400
                                 }}
-                                domain={{x: [,6], y: [-10,]}}
-                                gridHorizontal={true}
+                                domain={{x: [], y: [-10,]}}
+                                hoverAnimation={false}
                               />
                         </div>
                     </div>}
@@ -244,15 +250,18 @@ class Dashboard extends Component {
                 {/* Pressure */ }
                 <div className="sensor-wrapper" onClick={() => { this.setState({showPressure: !this.state.showPressure}) }}>
                     <div className="row">
-                        <div className="col s6">
+                        <div className="col s8">
                             <h2>Pressure <i className="material-icons expand-more"><h2>{this.state.showPressure ? 'expand_less' : 'expand_more'}</h2></i></h2>
                         </div>
-                        <div className="col s6">
+                        <div className="col s2">
                             <div className="circle-outer">
                                 <div className="circle-inner">
-                                    {Math.floor(pressure)}<span>{`.${Math.round((pressure.toFixed(1) % 1) * 10)}`}</span><strong>hPa</strong>
+                                    {Math.floor(pressure)}<span>{`.${Math.round((pressure.toFixed(1) % 1) * 10)}`}</span>
                                 </div>
                             </div>
+                        </div>
+                        <div className="col s2">
+                            <h2 className="unit-measure"><strong>hPa</strong></h2>
                         </div>
                     </div>
                     {this.state.showPressure && <div className="row">
@@ -276,8 +285,7 @@ class Dashboard extends Component {
                                   width: 1000,
                                   height: 400
                                 }}
-                                domain={{x: [,6], y: [-10,]}}
-                                gridHorizontal={true}
+                                domain={{x: [], y: [-10,]}}
                                 hoverAnimation={false}
                               />
                         </div>
@@ -288,17 +296,19 @@ class Dashboard extends Component {
     }
 
     _tick() {
-        api.getLastQty({ qty: 10 }, function(tail) {
+        api.getLastQty({ qty: 25 }, function(tail) {
             self.setState({ data: tail });
         })
     }
 
     _toggleGreen() {
         this.setState({ active: 'green' });
+        api.setSemaphoreState({ state: 0});
     }
 
     _toggleRed() {
         this.setState({ active: 'red' });
+        api.setSemaphoreState({ state: 1});
     }
 
     _toggleYellow() {
