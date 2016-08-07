@@ -79,8 +79,8 @@ class Semaphore(object):
             self._yellow.clear()
             self._yellow.flush()
 
-            self._green.fill(True)
-            self._green.flush()
+            self._red.fill(True)
+            self._red.flush()
 
             self._trinket.write_semaphore_state(False)
             self._state = False
