@@ -70,7 +70,7 @@ class Dashboard extends Component {
                             </div>
                         </div>
                         <div className="col s6">
-                            <h5>{moment().format('MMMM Do YYYY, h:mm:ss a')}</h5>
+                            <h5>{semaphore.timestamp}</h5>
                         </div>
                     </div>
                 </div>
