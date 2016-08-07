@@ -15,12 +15,12 @@ class Dashboard extends Component {
         self = this;
         this.state = {
             data: [{
-                audio: '',
-                humidity: '',
+                audio: '0',
+                humidity: '0.0',
                 timestamp: '',
-                pressure: '',
+                pressure: '0.0',
                 state: '',
-                gas: '',
+                gas: '0',
                 id_semaphore: '',
                 temperature: '0.0'
             }]
@@ -37,7 +37,10 @@ class Dashboard extends Component {
 
     render() {
         var semaphore = _.last(this.state.data);
+        var audio = parseInt(semaphore.audio);
         var temperature = parseFloat(semaphore.temperature);
+        var humidity = parseFloat(semaphore.humidity);
+        var pressure = parseFloat(semaphore.pressure);
 
         return (
             <div className="container">
@@ -65,11 +68,15 @@ class Dashboard extends Component {
 
                 {/* Noise */ }
                 <div className="row">
-                    <div className="col s9">
-                        <h2>Noise</h2>
+                    <div className="col s6">
+                        <h2>Noise <i className="material-icons expand-more"><h2>expand_more</h2></i></h2>
                     </div>
-                    <div className="col s3">
-                        <h5>{`${semaphore.audio} dB`}</h5>
+                    <div className="col s6">
+                        <div className="circle-outer">
+                            <div className="circle-inner">
+                                {Math.floor(audio/10)}<strong>dB</strong>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div className="row">
@@ -102,11 +109,11 @@ class Dashboard extends Component {
                 {/* Temperature */ }
                 <div className="row">
                     <div className="col s6">
-                        <h2>Temperature</h2>
+                        <h2>Temperature <i className="material-icons expand-more"><h2>expand_more</h2></i></h2>
                     </div>
                     <div className="col s6">
-                        <div className="thermometer-outer">
-                            <div className="thermometer-inner">
+                        <div className="circle-outer thermometer-outer">
+                            <div className="circle-inner">
                                 {Math.floor(temperature)}<span>{`.${Math.round((temperature.toFixed(1) % 1) * 10)}`}</span><strong>&deg;</strong>
                             </div>
                         </div>
@@ -141,10 +148,14 @@ class Dashboard extends Component {
                 {/* Humidity */ }
                 <div className="row">
                     <div className="col s6">
-                        <h2>Humidity</h2>
+                        <h2>Humidity <i className="material-icons expand-more"><h2>expand_more</h2></i></h2>
                     </div>
                     <div className="col s6">
-                        {semaphore.humidity}
+                        <div className="circle-outer">
+                            <div className="circle-inner">
+                                {Math.floor(humidity)}<span>{`.${Math.round((humidity.toFixed(1) % 1) * 10)}`}</span><strong>%</strong>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div className="row">
@@ -176,10 +187,14 @@ class Dashboard extends Component {
                 {/* Pressure */ }
                 <div className="row">
                     <div className="col s6">
-                        <h2>Pressure</h2>
+                        <h2>Pressure <i className="material-icons expand-more"><h2>expand_more</h2></i></h2>
                     </div>
                     <div className="col s6">
-                        {semaphore.pressure}
+                        <div className="circle-outer">
+                            <div className="circle-inner">
+                                {Math.floor(pressure)}<span>{`.${Math.round((pressure.toFixed(1) % 1) * 10)}`}</span><strong>hPa</strong>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div className="row">
@@ -207,7 +222,6 @@ class Dashboard extends Component {
                         gridHorizontal={true}
                       />
                     </div>
-
                 </div>
             </div>
         );
