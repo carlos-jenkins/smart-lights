@@ -64,9 +64,9 @@ class Dashboard extends Component {
                         </div>
                         <div className="col s3">
                             <div className="trafficlight">
-                                <div className={`red ${semaphore.state ? '' : 'inactive'}`} onClick={() => { this._toggleRed() }}/>
+                                <div className={`red ${_.isBoolean(semaphore.date) && semaphore.state ? '' : 'inactive'}`} onClick={() => { this._toggleRed() }}/>
                                 <div className={'yellow inactive'} onClick={() => { this._toggleYellow() }}/>
-                                <div className={`green ${!semaphore.state ? '' : 'inactive'}`} onClick={() => { this._toggleGreen() }}/>
+                                <div className={`green ${_.isBoolean(semaphore.date) && !semaphore.state ? '' : 'inactive'}`} onClick={() => { this._toggleGreen() }}/>
                             </div>
                         </div>
                         <div className="col s6">
