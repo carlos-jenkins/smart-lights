@@ -17,6 +17,8 @@
 # under the License.
 
 from time import sleep
+from datetime import datetime
+from requests import post
 
 from .bme280 import BME280
 from .trinket import Trinket
@@ -25,7 +27,7 @@ from .matrix8x8 import Matrix8x8
 
 class Semaphore(object):
 
-    def __init__(self):
+    def __init__(self, uri):
         self._busnum = 2
 
         self._green = Matrix8x8(self._busnum, 0x70)
@@ -40,6 +42,8 @@ class Semaphore(object):
 
         self._state = None
         self.set_semaphore(False)
+
+        self.uri = uri
 
     def gather_data(self):
         data = {}
@@ -84,6 +88,17 @@ class Semaphore(object):
 
             self._trinket.write_semaphore_state(False)
             self._state = False
+
+    def send_data(self):
+        semaphore_data = {}
+        semaphore_data['id_semaphore'] = "1"
+        semaphore_data['timestamp'] = datetime.now().isoformat()
+        semaphore_data['state'] = self._state
+        semaphore_data.update(self.gather_data())
+        print(semaphore_data)
+
+        post(self.uri, data=semaphore_data)
+
 
 
 __all__ = ['Semaphore']

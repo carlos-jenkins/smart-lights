@@ -22,3 +22,8 @@ def test_transition():
     print('Semaphore is going RED')
     sleep(5)
     semaphore.set_semaphore(False)
+
+def test_send_data():
+    semaphore = Semaphore('http://hwthoncr16.herokuapp.com/thegrid')
+    while True:
+        semaphore.send_data()
