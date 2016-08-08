@@ -42,7 +42,7 @@ def external_state_set(state):
 
 class Semaphore(object):
 
-    def __init__(self, uri, semaphore_id=1):
+    def __init__(self, uri, external_uri, semaphore_id=1):
         self._busnum = 2
         self._semaphore_id = semaphore_id
 
@@ -60,6 +60,7 @@ class Semaphore(object):
         self.set_semaphore(external_state)
 
         self.uri = uri
+        self.external_uri = external_uri
 
     def gather_data(self):
         data = {}
@@ -111,7 +112,17 @@ class Semaphore(object):
         semaphore_data['timestamp'] = datetime.now().isoformat()
         semaphore_data['state'] = self._state
         semaphore_data.update(self.gather_data())
-        post(self.uri, data=semaphore_data)
+
+        try:
+            post(self.uri, data=semaphore_data)
+        except:
+            print('Failed to post data to local server')
+
+        try:
+            post(self.uri, data=semaphore_data)
+        except:
+            print('Failed to post data to external server')
+
         print(semaphore_data)
 
     def start(self, host='0.0.0.0', port=8080):
