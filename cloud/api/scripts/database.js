@@ -13,7 +13,7 @@ module.exports = {
         });
     },
     selectAll(table, callback) {
-        rethinkDB.db('open_semaphore').table(table).run(connection, function(err, cursor) {
+        rethinkDB.db('smart_lights').table(table).run(connection, function(err, cursor) {
             cursor.toArray(function(err, result) {
                 if(err) {
                     return next(err);

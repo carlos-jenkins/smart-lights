@@ -14,6 +14,12 @@ app.get('/grid', function(req, res) {
 
 });
 
+app.get('/semaphore/data', function(req, res) {
+    db.selectAll('semaphore_data', function(data) {
+        res.json(data)
+    });
+});
+
 app.get('/', function (req, res) {
     res.json({data: 'Hello Semaphore'});
 });
