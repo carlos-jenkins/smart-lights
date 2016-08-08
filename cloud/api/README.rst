@@ -1,24 +1,35 @@
-==========================
-Smart Lights Web Dashboard
-==========================
+================
+Smart Lights API
+================
 
 Run
 ===
 
-To build the web page you need to run the following commands:
+To run the api you need to run the following commands:
 
 ::
 
   npm install // to install the dependencies
-  npm start  // to start the web page
+  node scripts/server.js  // to start the web page
 
 
-After this, you are able to see the page in your browser by opening localhost in
-port 3000.
+After this, the api will be running in localhost:3001
+
+
+Available routes
+================
+
+To get semaphore grid with coordinates:
 
 ::
 
-  localhost:3000
+    /grid
+
+To get all semaphore data:
+
+::
+
+    /all
 
 
 License
