@@ -1,6 +1,6 @@
 var express = require('express');
 var cors = require('cors')
-var db = require('./database');
+var db = require('./scripts/database');
 
 var app = express();
 app.use(cors());
